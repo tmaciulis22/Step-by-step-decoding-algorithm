@@ -1,16 +1,15 @@
 package ui
 
-import controller.ChannelController
-import controller.CodeController
+import module.Channel
+import module.Encoder
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
-import javafx.geometry.Pos
 import tornadofx.*
 
 class ParametersView: View() {
 
-    private val codeController: CodeController by inject()
-    private val channelController: ChannelController by inject()
+    private val encoder: Encoder by inject()
+    private val channel: Channel by inject()
 
     private val parameterN = SimpleIntegerProperty()
     private val parameterK = SimpleIntegerProperty()
@@ -34,8 +33,8 @@ class ParametersView: View() {
         button("Continue") {
             action {
                 if (allParametersEntered) {
-                    codeController.setCodeParameters(parameterN.value, parameterK.value)
-                    channelController.createChannel(parameterPe.value)
+                    encoder.init(parameterN.value, parameterK.value)
+                    channel.init(parameterPe.value)
                     replaceWith(
                         GeneratorMatrixView::class,
                         ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
