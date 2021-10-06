@@ -14,6 +14,7 @@ class Encoder : Controller() {
     lateinit var generatorMatrix: Array<Array<Int>>
         private set
 
+    // TODO delete these
     var originalVector: Array<Int>? = null
         private set
     var encodedVector: Array<Int>? = null

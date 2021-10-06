@@ -1,15 +1,16 @@
 package ui.firstScenario
 
 import javafx.beans.property.SimpleStringProperty
-import javafx.event.EventTarget
 import javafx.geometry.Pos
 import module.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
+import util.textFieldCell
 
 class FirstScenarioView : View() {
 
     private val encoder: Encoder by inject()
+
     private val vector = Array(encoder.parameterK) { 0 }
     private val encodedVectorProperty = SimpleStringProperty("--------")
 
@@ -22,7 +23,13 @@ class FirstScenarioView : View() {
         }
         center = hbox(spacing = 100 / encoder.parameterK) {
             vector.forEachIndexed { index, value ->
-                getEditableTextField(value, index)
+                textFieldCell(value) {
+                    if (it == "") return@textFieldCell
+
+                    val newIntValue = it.toInt()
+                    if (newIntValue == 0 || newIntValue == 1)
+                        vector[index] = newIntValue
+                }
             }
         }
         bottom = vbox(alignment = Pos.CENTER_RIGHT) {
@@ -42,22 +49,14 @@ class FirstScenarioView : View() {
             }
             button("Send") {
                 action {
-
+                    if (encoder.encodedVector != null) {
+                        replaceWith(
+                            ChannelView::class,
+                            ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
+                        )
+                    }
                 }
             }
-        }
-    }
-
-    private fun EventTarget.getEditableTextField(
-        value: Int,
-        index: Int
-    ) = textfield(value.toString()) {
-        textProperty().addListener { _, _, new ->
-            if (new == "") return@addListener
-
-            val newIntValue = new.toInt()
-            if (newIntValue == 0 || newIntValue == 1)
-                vector[index] = newIntValue
         }
     }
 }

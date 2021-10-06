@@ -1,11 +1,11 @@
 package ui
 
 import module.Encoder
-import javafx.event.EventTarget
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import module.Decoder
 import tornadofx.*
+import util.textFieldCell
 
 class GeneratorMatrixView : View() {
 
@@ -20,15 +20,22 @@ class GeneratorMatrixView : View() {
             }
         }
         center = gridpane {
-            subscribe<MatrixLoadedEvent> { event ->
+            subscribe<MatrixChangedEvent> {
                 this@gridpane.clear()
-                event.matrix.forEachIndexed { rowIndex, row ->
+                encoder.generatorMatrix.forEachIndexed { rowIndex, row ->
                     row {
                         row.forEachIndexed { colIndex, value ->
-                            if (colIndex >= encoder.parameterK)
-                                getEditableTextField(value, rowIndex, colIndex)
-                            else
-                                getNonEditableTextField(value)
+                            if (colIndex >= encoder.parameterK) {
+                                textFieldCell(value) {
+                                    if (it == "") return@textFieldCell
+
+                                    val newIntValue = it.toInt()
+                                    if (newIntValue == 0 || newIntValue == 1)
+                                        encoder.generatorMatrix[rowIndex][colIndex] = newIntValue
+                                }
+                            } else {
+                                textFieldCell(value, isEditable = false)
+                            }
                         }
                     }
                 }
@@ -38,7 +45,7 @@ class GeneratorMatrixView : View() {
             button("Random") {
                 action {
                     encoder.generateRandomRemainingMatrix()
-                    fire(MatrixLoadedEvent(encoder.generatorMatrix))
+                    fire(MatrixChangedEvent())
                 }
             }
             button("Continue") {
@@ -56,28 +63,8 @@ class GeneratorMatrixView : View() {
 
     override fun onDock() {
         super.onDock()
-        fire(MatrixLoadedEvent(encoder.generatorMatrix))
-    }
-
-    private fun EventTarget.getEditableTextField(
-        value: Int,
-        rowIndex: Int,
-        colIndex: Int
-    ) = textfield(value.toString()) {
-        textProperty().addListener { _, _, new ->
-            if (new == "") return@addListener
-
-            val newIntValue = new.toInt()
-            if (newIntValue == 0 || newIntValue == 1)
-                encoder.generatorMatrix[rowIndex][colIndex] = newIntValue
-        }
-    }
-
-    private fun EventTarget.getNonEditableTextField(
-        value: Int
-    ) = textfield(value.toString()) {
-        isEditable = false
+        fire(MatrixChangedEvent())
     }
 }
 
-class MatrixLoadedEvent(val matrix: Array<Array<Int>>) : FXEvent()
+class MatrixChangedEvent : FXEvent()

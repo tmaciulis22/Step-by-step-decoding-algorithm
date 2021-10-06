@@ -1,5 +1,22 @@
 package util
 
+import javafx.event.EventTarget
+import tornadofx.textfield
+import javax.naming.OperationNotSupportedException
+
+// GUI related extensions
+fun <T> EventTarget.textFieldCell(
+    value: T,
+    isEditable: Boolean = true,
+    changeListener: ((String) -> Unit)? = null
+) =
+    textfield(value.toString()) {
+        this.isEditable = isEditable
+        textProperty().addListener { _, _, new ->
+            changeListener?.invoke(new)
+        }
+    }
+
 // Extension function used for multiplication of a matrix and a transposed vector
 // Arguments: Matrix[K, N] (Receiver type), vector[N]
 // Returns: Vector[K]
@@ -49,3 +66,13 @@ fun Collection<Int>.getNumOfOnes(): Int {
 
     return this.reduce { acc, bit -> acc + bit }
 }
+
+// Extension function which reverses 0 bit to 1 and vice versa
+// Arguments: Any 0 or 1 bit (Receiver type)
+// Returns: Reversed(flipped) bit
+fun Int.reverseBit(): Int =
+    when(this) {
+        0 -> 1
+        1 -> 0
+        else -> throw OperationNotSupportedException()
+    }
