@@ -1,10 +1,10 @@
-package module
+package viewModel
 
-import tornadofx.Controller
+import tornadofx.ViewModel
 import util.reverseBit
 import kotlin.random.Random
 
-class Channel : Controller() {
+class Channel : ViewModel() {
 
     private var parameterPe = 0.0
 

@@ -1,8 +1,9 @@
 package util
 
 import javafx.event.EventTarget
-import tornadofx.textfield
+import tornadofx.*
 import javax.naming.OperationNotSupportedException
+import kotlin.reflect.KClass
 
 // GUI related extensions
 fun <T> EventTarget.textFieldCell(
@@ -16,6 +17,11 @@ fun <T> EventTarget.textFieldCell(
             changeListener?.invoke(new)
         }
     }
+
+inline fun <reified T : UIComponent> View.replaceWith(
+    params: Map<String, Any>,
+    transition: ViewTransition = ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
+) = replaceWith(find(T::class, scope, params), transition)
 
 // Extension function used for multiplication of a matrix and a transposed vector
 // Arguments: Matrix[K, N] (Receiver type), vector[N]
@@ -38,8 +44,8 @@ fun Array<Array<Int>>.multiplyTransposed(vector: Array<Int>): Array<Int>? {
 // Extensions function used for multiplication of a matrix and vector (not transposed)
 // Arguments: Matrix[K, N] (Receiver type), vector[K]
 // Returns: Vector[N]
-fun Array<Array<Int>>.multiply(vector: Array<Int>): Array<Int>? {
-    if (this.size != vector.size) return null
+fun Array<Array<Int>>.multiply(vector: Array<Int>): Array<Int> {
+    if (this.size != vector.size) throw OperationNotSupportedException()
 
     val result = Array(this[0].size) { 0 }
 

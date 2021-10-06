@@ -1,7 +1,7 @@
 package ui
 
-import module.Channel
-import module.Encoder
+import viewModel.Channel
+import viewModel.Encoder
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos

@@ -2,17 +2,19 @@ package ui.firstScenario
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import module.Encoder
+import viewModel.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
 import util.textFieldCell
+import util.replaceWith
 
 class FirstScenarioView : View() {
 
     private val encoder: Encoder by inject()
 
-    private val vector = Array(encoder.parameterK) { 0 }
-    private val encodedVectorProperty = SimpleStringProperty("--------")
+    private var encodedVector = Array(encoder.parameterN) { 0 }
+    private val encodedVectorProperty = SimpleStringProperty(encodedVector.toList().toString())
+    private val originalVector = Array(encoder.parameterK) { 0 }
 
     override val root = borderpane {
         padding = insets(10.0)
@@ -22,21 +24,21 @@ class FirstScenarioView : View() {
             }
         }
         center = hbox(spacing = 100 / encoder.parameterK) {
-            vector.forEachIndexed { index, value ->
+            originalVector.forEachIndexed { index, value ->
                 textFieldCell(value) {
                     if (it == "") return@textFieldCell
 
                     val newIntValue = it.toInt()
                     if (newIntValue == 0 || newIntValue == 1)
-                        vector[index] = newIntValue
+                        originalVector[index] = newIntValue
                 }
             }
         }
         bottom = vbox(alignment = Pos.CENTER_RIGHT) {
             button("Encode") {
                 action {
-                    encoder.encode(vector)
-                    encodedVectorProperty.set(encoder.encodedVector?.toList().toString())
+                    encodedVector = encoder.encode(originalVector)
+                    encodedVectorProperty.set(encodedVector.toList().toString())
                 }
             }
             separator {
@@ -49,12 +51,12 @@ class FirstScenarioView : View() {
             }
             button("Send") {
                 action {
-                    if (encoder.encodedVector != null) {
-                        replaceWith(
-                            ChannelView::class,
-                            ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
+                    replaceWith<ChannelView>(
+                        params = mapOf(
+                            ChannelView.PARAM_ORIGINAL_VECTOR to originalVector,
+                            ChannelView.PARAM_ENCODED_VECTOR to encodedVector
                         )
-                    }
+                    )
                 }
             }
         }

@@ -4,20 +4,21 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.event.EventTarget
 import javafx.geometry.Pos
 import javafx.scene.text.Font
-import module.Channel
-import module.Encoder
+import viewModel.Channel
 import tornadofx.*
 import util.textFieldCell
 
 class ChannelView : View() {
 
-    private val encoder: Encoder by inject()
     private val channel: Channel by inject()
     private val vectorProperty = SimpleObjectProperty<Array<Int>>()
     private val mistakesProperty = SimpleObjectProperty<Array<Boolean>>()
 
+    private val originalVector: Array<Int> by param()
+    private val encodedVector: Array<Int> by param()
+
     init {
-        val vectorAndMistakes = channel.send(encoder.encodedVector)
+        val vectorAndMistakes = channel.send(encodedVector)
         vectorProperty.set(vectorAndMistakes?.first)
         mistakesProperty.set(vectorAndMistakes?.second)
     }
@@ -80,6 +81,11 @@ class ChannelView : View() {
         text("X")
     else
         text("_")
+
+    companion object {
+        const val PARAM_ORIGINAL_VECTOR = "originalVector"
+        const val PARAM_ENCODED_VECTOR = "encodedVector"
+    }
 }
 
 class VectorChangeEvent : FXEvent()

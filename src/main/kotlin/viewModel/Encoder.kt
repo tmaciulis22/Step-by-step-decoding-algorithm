@@ -1,10 +1,11 @@
-package module
+package viewModel
 
-import tornadofx.Controller
+import tornadofx.ViewModel
 import util.multiply
+import javax.naming.OperationNotSupportedException
 import kotlin.random.Random
 
-class Encoder : Controller() {
+class Encoder : ViewModel() {
 
     var parameterN: Int = 0
         private set
@@ -12,12 +13,6 @@ class Encoder : Controller() {
         private set
 
     lateinit var generatorMatrix: Array<Array<Int>>
-        private set
-
-    // TODO delete these
-    var originalVector: Array<Int>? = null
-        private set
-    var encodedVector: Array<Int>? = null
         private set
 
     fun init(parameterN: Int, parameterK: Int) {
@@ -39,12 +34,11 @@ class Encoder : Controller() {
         }
     }
 
-    fun encode(vector: Array<Int>) {
-        if (vector.size > parameterK) return
-
-        originalVector = vector.copyOf()
-        encodedVector = generatorMatrix.multiply(vector) ?: Array(parameterN) { 0 }
-    }
+    fun encode(vector: Array<Int>): Array<Int> =
+        if (vector.size > parameterK)
+            throw OperationNotSupportedException()
+        else
+            generatorMatrix.multiply(vector)
 
     private fun setIdentityMatrix() {
         // zymeklis, kuris nurodo kur bus irasomas 1

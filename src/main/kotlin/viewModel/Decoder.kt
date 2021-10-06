@@ -1,12 +1,12 @@
-package module
+package viewModel
 
-import tornadofx.Controller
+import tornadofx.ViewModel
 import util.getNumOfOnes
 import util.includes
 import util.multiplyTransposed
 import kotlin.math.pow
 
-class Decoder : Controller() {
+class Decoder : ViewModel() {
 
     lateinit var controlMatrix: Array<Array<Int>>
         private set

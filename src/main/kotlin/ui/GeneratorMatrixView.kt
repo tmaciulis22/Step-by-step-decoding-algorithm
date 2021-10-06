@@ -1,9 +1,9 @@
 package ui
 
-import module.Encoder
+import viewModel.Encoder
 import javafx.geometry.Pos
 import javafx.scene.text.Font
-import module.Decoder
+import viewModel.Decoder
 import tornadofx.*
 import util.textFieldCell
 
