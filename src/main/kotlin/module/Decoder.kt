@@ -35,7 +35,7 @@ class Decoder : Controller() {
 
     private fun setIdentityMatrix(parameterN: Int, parameterK: Int) {
         // zymeklis, kuris nurodo kur bus irasomas 1
-        var currentPos = parameterN - parameterK - 1
+        var currentPos = parameterN - parameterK
         controlMatrix.forEach { row ->
             row[currentPos] = 1
             currentPos++
@@ -48,24 +48,7 @@ class Decoder : Controller() {
         syndromes = Array(numOfClasses) { Array(parameterN - parameterK ) { 0 } }
         classLeadersWeights = Array(numOfClasses) { 0 }
 
-        // Kiek klasiu lyderiu jau radom. Viena lyderi jau turim, tai 00..00 vektorius
-//        var classLeadersFound = 1
-//        val zeroVector = Array(parameterN) { 0 }
-
-        findSyndromesAndWeightsRec(
-            Array(parameterN) { 0 },
-            0,
-            0,
-            1
-        )
-
-        val asd = 0
-
-//        while (classLeadersFound < numOfClasses) {
-//            val possibleLeader = findSyndromesAndWeightsRec(
-//                parameterN, zeroVector, 0)
-//            classLeadersFound++
-//        }
+        findSyndromesAndWeightsRec(vector = Array(parameterN) { 0 })
     }
 
     private fun findSyndromesAndWeightsRec(
@@ -74,29 +57,31 @@ class Decoder : Controller() {
         position: Int = 0,
         numOfClassesFound: Int = 1
     ) {
+        if (numOfClassesFound >= classLeadersWeights.size) return
+
         vector[position] = 1
         val syndrome = controlMatrix.multiply(vector) ?: return
-        val weight = vector.getNumOfOnes()
 
         var syndromeAdded = false
         if (!syndromes.includes(syndrome)) {
             syndromes[numOfClassesFound] = syndrome
-            classLeadersWeights[numOfClassesFound] = weight
+            classLeadersWeights[numOfClassesFound] = vector.getNumOfOnes()
             syndromeAdded = true
         }
-
-        if (numOfClassesFound >= classLeadersWeights.size) return
+        vector[position] = 0
 
         val isLastPosition = position >= vector.size - 1
-        if (!isLastPosition)
-            vector[position] = 0
-        else
-            vector[posOfLastPositiveBit + 1] = 1 // TODO cia crashina
+
+        var newPosOfLastPositiveBit = posOfLastPositiveBit
+        if (isLastPosition && posOfLastPositiveBit + 1 <= vector.size - 1) {
+            newPosOfLastPositiveBit += 1
+            vector[newPosOfLastPositiveBit] = 1
+        }
 
         findSyndromesAndWeightsRec(
             vector,
-            posOfLastPositiveBit + if (isLastPosition) 1 else 0,
-            if (isLastPosition) posOfLastPositiveBit + 1 else position + 1,
+            newPosOfLastPositiveBit,
+            if (isLastPosition) newPosOfLastPositiveBit + 1 else position + 1,
             numOfClassesFound + if (syndromeAdded) 1 else 0
         )
     }
