@@ -3,7 +3,7 @@ package module
 import tornadofx.Controller
 import util.getNumOfOnes
 import util.includes
-import util.multiply
+import util.multiplyTransposed
 import kotlin.math.pow
 
 class Decoder : Controller() {
@@ -18,7 +18,7 @@ class Decoder : Controller() {
     fun init(parameterN: Int, parameterK: Int, generatorMatrix: Array<Array<Int>>) {
         controlMatrix = Array(parameterN - parameterK) { Array(parameterN) { 0 } }
         setTransposeMatrix(parameterK, generatorMatrix)
-        setIdentityMatrix(parameterN, parameterK)
+        setIdentityMatrix(parameterK)
         findSyndromesAndWeights(parameterN, parameterK)
     }
 
@@ -33,9 +33,9 @@ class Decoder : Controller() {
         }
     }
 
-    private fun setIdentityMatrix(parameterN: Int, parameterK: Int) {
+    private fun setIdentityMatrix(parameterK: Int) {
         // zymeklis, kuris nurodo kur bus irasomas 1
-        var currentPos = parameterN - parameterK
+        var currentPos = parameterK
         controlMatrix.forEach { row ->
             row[currentPos] = 1
             currentPos++
@@ -48,41 +48,52 @@ class Decoder : Controller() {
         syndromes = Array(numOfClasses) { Array(parameterN - parameterK ) { 0 } }
         classLeadersWeights = Array(numOfClasses) { 0 }
 
-        findSyndromesAndWeightsRec(vector = Array(parameterN) { 0 })
+        var numOfClassesFound = 1
+        var numOfPositiveBits = 1
+        while (numOfClassesFound < numOfClasses) {
+            val possibleClassLeaders = getVectors(parameterN, numOfPositiveBits)
+            possibleClassLeaders.forEach { vector ->
+                if (numOfClassesFound >= numOfClasses) return@forEach
+
+                val syndrome = controlMatrix.multiplyTransposed(vector)
+                if (syndrome != null && !syndromes.includes(syndrome)) {
+                    syndromes[numOfClassesFound] = syndrome
+                    classLeadersWeights[numOfClassesFound] = vector.toList().getNumOfOnes()
+                    numOfClassesFound++
+                }
+            }
+            numOfPositiveBits++
+        }
     }
 
-    private fun findSyndromesAndWeightsRec(
-        vector: Array<Int>,
-        posOfLastPositiveBit: Int = -1,
-        position: Int = 0,
-        numOfClassesFound: Int = 1
-    ) {
-        if (numOfClassesFound >= classLeadersWeights.size) return
+    private fun getVectors(
+        parameterN: Int,
+        numOfPositiveBits: Int = 1,
+        vector: MutableList<Int> = mutableListOf()
+    ): List<Array<Int>> {
+        val vectors = mutableListOf<Array<Int>>()
+        if (vector.size == parameterN) {
+            if (vector.getNumOfOnes() == numOfPositiveBits)
+                vectors.add(vector.toTypedArray())
 
-        vector[position] = 1
-        val syndrome = controlMatrix.multiply(vector) ?: return
-
-        var syndromeAdded = false
-        if (!syndromes.includes(syndrome)) {
-            syndromes[numOfClassesFound] = syndrome
-            classLeadersWeights[numOfClassesFound] = vector.getNumOfOnes()
-            syndromeAdded = true
-        }
-        vector[position] = 0
-
-        val isLastPosition = position >= vector.size - 1
-
-        var newPosOfLastPositiveBit = posOfLastPositiveBit
-        if (isLastPosition && posOfLastPositiveBit + 1 <= vector.size - 1) {
-            newPosOfLastPositiveBit += 1
-            vector[newPosOfLastPositiveBit] = 1
+            return vectors
         }
 
-        findSyndromesAndWeightsRec(
-            vector,
-            newPosOfLastPositiveBit,
-            if (isLastPosition) newPosOfLastPositiveBit + 1 else position + 1,
-            numOfClassesFound + if (syndromeAdded) 1 else 0
-        )
+        // First assign "0" at the start of vector
+        // and try for all other permutations
+        // for remaining positions
+        var newVector = vector.toMutableList()
+        newVector.add(0 , 0)
+        vectors.addAll(getVectors(parameterN, numOfPositiveBits, newVector))
+
+        // And then assign "1" at the start of vector
+        // and try for all other permutations
+        // for remaining positions
+        if (vector.getNumOfOnes() < numOfPositiveBits) {
+            newVector = vector.toMutableList()
+            newVector.add(0, 1)
+            vectors.addAll(getVectors(parameterN, numOfPositiveBits, newVector))
+        }
+        return vectors
     }
 }

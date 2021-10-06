@@ -4,6 +4,7 @@ import module.Channel
 import module.Encoder
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
+import javafx.geometry.Pos
 import tornadofx.*
 
 class ParametersView: View() {
@@ -30,15 +31,17 @@ class ParametersView: View() {
                 textfield(parameterPe)
             }
         }
-        button("Continue") {
-            action {
-                if (allParametersEntered) {
-                    encoder.init(parameterN.value, parameterK.value)
-                    channel.init(parameterPe.value)
-                    replaceWith(
-                        GeneratorMatrixView::class,
-                        ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
-                    )
+        hbox(alignment = Pos.CENTER_RIGHT) {
+            button("Continue") {
+                action {
+                    if (allParametersEntered) {
+                        encoder.init(parameterN.value, parameterK.value)
+                        channel.init(parameterPe.value)
+                        replaceWith(
+                            GeneratorMatrixView::class,
+                            ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
+                        )
+                    }
                 }
             }
         }

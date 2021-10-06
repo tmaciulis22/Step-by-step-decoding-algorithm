@@ -2,7 +2,6 @@ package ui
 
 import module.Encoder
 import javafx.event.EventTarget
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import module.Decoder
@@ -51,7 +50,7 @@ class GeneratorMatrixView : View() {
                     )
                 }
             }
-            padding = Insets(0.0, 0.0, 20.0, 0.0)
+            padding = insets(bottom = 20.0)
         }
     }
 
