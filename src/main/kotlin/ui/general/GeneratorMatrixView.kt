@@ -17,44 +17,46 @@ class GeneratorMatrixView : View() {
 
     private val headerString = SimpleStringProperty()
 
-    override val root = borderpane {
-        top = stackpane {
-            label(headerString) {
-                font = Font(30.0)
+    override val root = scrollpane(fitToWidth = true, fitToHeight = true) {
+        borderpane {
+            top = stackpane {
+                label(headerString) {
+                    font = Font(30.0)
+                }
             }
-        }
-        center = gridpane {
-            subscribe<MatrixChangedEvent> {
-                this@gridpane.clear()
-                encoder.generatorMatrix.forEachIndexed { rowIndex, row ->
-                    row {
-                        row.forEachIndexed { colIndex, value ->
-                            if (colIndex >= encoder.parameterK) {
-                                textFieldBit(value) {
-                                    encoder.generatorMatrix[rowIndex][colIndex] = it.toInt()
+            center = gridpane {
+                subscribe<MatrixChangedEvent> {
+                    this@gridpane.clear()
+                    encoder.generatorMatrix.forEachIndexed { rowIndex, row ->
+                        row {
+                            row.forEachIndexed { colIndex, value ->
+                                if (colIndex >= encoder.parameterK) {
+                                    textFieldBit(value) {
+                                        encoder.generatorMatrix[rowIndex][colIndex] = it.toInt()
+                                    }
+                                } else {
+                                    textFieldBit(value, isEditable = false)
                                 }
-                            } else {
-                                textFieldBit(value, isEditable = false)
                             }
                         }
                     }
                 }
             }
-        }
-        bottom = hbox(10, alignment = Pos.CENTER) {
-            button("Random") {
-                action {
-                    encoder.generateRandomRemainingMatrix()
-                    fire(MatrixChangedEvent())
+            bottom = hbox(10, alignment = Pos.CENTER) {
+                button("Random") {
+                    action {
+                        encoder.generateRandomRemainingMatrix()
+                        fire(MatrixChangedEvent())
+                    }
                 }
-            }
-            button("Continue") {
-                action {
-                    decoder.init(encoder.parameterN, encoder.parameterK, encoder.generatorMatrix)
-                    nextView<ScenarioSelectorView>()
+                button("Continue") {
+                    action {
+                        decoder.init(encoder.parameterN, encoder.parameterK, encoder.generatorMatrix)
+                        nextView<ScenarioSelectorView>()
+                    }
                 }
+                padding = insets(bottom = 20.0)
             }
-            padding = insets(bottom = 20.0)
         }
     }
 

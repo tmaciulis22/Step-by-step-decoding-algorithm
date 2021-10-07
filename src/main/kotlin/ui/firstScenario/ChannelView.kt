@@ -23,29 +23,31 @@ class ChannelView : View() {
     private val mistakesVector
         get() = firstScenarioViewModel.mistakesVector
 
-    override val root = borderpane {
-        padding = insets(10.0)
-        top = vbox(alignment = Pos.CENTER) {
-            label("Vector from channel") {
-                font = Font(20.0)
-            }
-        }
-        center = hbox {
-            subscribe<VectorChangeEvent> {
-                this@hbox.clear()
-                fromChannelVector.value.forEachIndexed { index, value ->
-                    getBitAndMistakeCell(value, mistakesVector.value[index], index)
+    override val root = scrollpane(fitToWidth = true, fitToHeight = true) {
+        borderpane {
+            padding = insets(10.0)
+            top = vbox(alignment = Pos.CENTER) {
+                label("Vector from channel") {
+                    font = Font(20.0)
                 }
             }
-        }
-        bottom = vbox {
-            label("X - mistake")
-            label("_ - no mistake")
-            vbox(alignment = Pos.CENTER_RIGHT) {
-                useMaxWidth = true
-                button("Decode") {
-                    action {
-                        nextView<DecodeView>()
+            center = hbox {
+                subscribe<VectorChangeEvent> {
+                    this@hbox.clear()
+                    fromChannelVector.value.forEachIndexed { index, value ->
+                        getBitAndMistakeCell(value, mistakesVector.value[index], index)
+                    }
+                }
+            }
+            bottom = vbox {
+                label("X - mistake")
+                label("_ - no mistake")
+                vbox(alignment = Pos.CENTER_RIGHT) {
+                    useMaxWidth = true
+                    button("Decode") {
+                        action {
+                            nextView<DecodeView>()
+                        }
                     }
                 }
             }

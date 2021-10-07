@@ -23,51 +23,54 @@ class DecodeView : View() {
     private val decodedVector
         get() = firstScenarioViewModel.decodedVector
 
+    // For some weird bug of labels not updating its value these string properties are needed
     private val originalVectorString = SimpleStringProperty()
     private val fromChannelVectorString = SimpleStringProperty()
 
-    override val root = borderpane {
-        padding = insets(10.0)
-        top = stackpane {
-            label("Decoding results") {
-                font = Font(26.0)
-            }
-        }
-        center = vbox(alignment = Pos.CENTER_LEFT) {
-            hbox {
-                label("Original vector: ") {
-                    font = Font(20.0)
-                }
-                label(originalVectorString) {
-                    font = Font(20.0)
+    override val root = scrollpane(fitToHeight = true, fitToWidth = true) {
+        borderpane {
+            padding = insets(10.0)
+            top = stackpane {
+                label("Decoding results") {
+                    font = Font(26.0)
                 }
             }
-            hbox {
-                label("From channel vector: ") {
-                    font = Font(20.0)
+            center = vbox(alignment = Pos.CENTER_LEFT) {
+                hbox {
+                    label("Original vector: ") {
+                        font = Font(20.0)
+                    }
+                    label(originalVectorString) {
+                        font = Font(20.0)
+                    }
                 }
-                label(fromChannelVectorString) {
-                    font = Font(20.0)
+                hbox {
+                    label("From channel vector: ") {
+                        font = Font(20.0)
+                    }
+                    label(fromChannelVectorString) {
+                        font = Font(20.0)
+                    }
+                }
+                hbox {
+                    label("Decoded vector: ") {
+                        font = Font(20.0)
+                    }
+                    label(decodedVector) {
+                        font = Font(20.0)
+                    }
                 }
             }
-            hbox {
-                label("Decoded vector: ") {
-                    font = Font(20.0)
+            bottom = hbox(spacing = 6, alignment = Pos.CENTER_RIGHT) {
+                button("Other scenario") {
+                    action {
+                        nextView<ScenarioSelectorView>(transition = null)
+                    }
                 }
-                label(decodedVector) {
-                    font = Font(20.0)
-                }
-            }
-        }
-        bottom = hbox(spacing = 6, alignment = Pos.CENTER_RIGHT) {
-            button("Other scenario") {
-                action {
-                    nextView<ScenarioSelectorView>(transition = null)
-                }
-            }
-            button("New parameters") {
-                action {
-                    nextView<ParametersView>(transition = null)
+                button("New parameters") {
+                    action {
+                        nextView<ParametersView>(transition = null)
+                    }
                 }
             }
         }

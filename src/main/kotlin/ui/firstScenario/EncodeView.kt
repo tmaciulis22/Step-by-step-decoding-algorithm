@@ -23,42 +23,44 @@ class EncodeView : View() {
 
     private val headerString = SimpleStringProperty()
 
-    override val root = borderpane {
-        padding = insets(10.0)
-        top = stackpane {
-            label(headerString) {
-                font = Font(20.0)
+    override val root = scrollpane(fitToWidth = true, fitToHeight = true) {
+        borderpane {
+            padding = insets(10.0)
+            top = stackpane {
+                label(headerString) {
+                    font = Font(20.0)
+                }
             }
-        }
-        center = vbox(alignment = Pos.CENTER_RIGHT, spacing = 8) {
-            hbox(spacing = 100 / encoder.parameterK) {
-                subscribe<VectorChangeEvent> {
-                    this@hbox.clear()
-                    originalVector.value.forEachIndexed { index, value ->
-                        textFieldBit(value) {
-                            originalVector.value[index] = it
+            center = vbox(alignment = Pos.CENTER_RIGHT, spacing = 8) {
+                hbox(spacing = 100 / encoder.parameterK) {
+                    subscribe<VectorChangeEvent> {
+                        this@hbox.clear()
+                        originalVector.value.forEachIndexed { index, value ->
+                            textFieldBit(value) {
+                                originalVector.value[index] = it
+                            }
                         }
                     }
                 }
-            }
-            button("Encode") {
-                action {
-                    encodedVector.set(encoder.encode(originalVector.value))
+                button("Encode") {
+                    action {
+                        encodedVector.set(encoder.encode(originalVector.value))
+                    }
                 }
             }
-        }
-        bottom = vbox(alignment = Pos.CENTER_RIGHT) {
-            separator {
-                padding = insets(top = 10.0)
-            }
-            stackpane {
-                label(encodedVector) {
-                    font = Font(18.0)
+            bottom = vbox(alignment = Pos.CENTER_RIGHT) {
+                separator {
+                    padding = insets(top = 10.0)
                 }
-            }
-            button("Send") {
-                action {
-                    nextView<ChannelView>()
+                stackpane {
+                    label(encodedVector) {
+                        font = Font(18.0)
+                    }
+                }
+                button("Send") {
+                    action {
+                        nextView<ChannelView>()
+                    }
                 }
             }
         }

@@ -5,7 +5,7 @@ import ui.general.ParametersView
 class App : App(ParametersView::class) {
     override fun start(stage: Stage) {
         super.start(stage)
-        stage.minHeight = 300.0
-        stage.minWidth = 500.0
+        stage.minHeight = 350.0
+        stage.minWidth = 550.0
     }
 }

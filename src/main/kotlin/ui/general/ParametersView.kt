@@ -5,6 +5,7 @@ import viewModel.Encoder
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
+import javafx.scene.layout.Priority
 import tornadofx.*
 import util.nextView
 
@@ -18,6 +19,7 @@ class ParametersView: View() {
     private val parameterPe = SimpleDoubleProperty()
 
     override val root = form {
+        padding = insets(24)
         fieldset("Enter parameters:") {
             field("Code length N") {
                 textfield(parameterN)
@@ -29,10 +31,13 @@ class ParametersView: View() {
                 textfield(parameterPe)
             }
         }
-        hbox(alignment = Pos.CENTER_RIGHT) {
+        vbox(alignment = Pos.BOTTOM_RIGHT) {
+            vgrow = Priority.ALWAYS
             button("Continue") {
                 action {
-                    if (parameterN.value > 0 && parameterK.value > 0 && parameterPe.value > 0) {
+                    val allParametersEntered = parameterN.value > 0 && parameterK.value > 0 && parameterPe.value > 0
+                    val isProbabilityValid = parameterPe.value in 0.0..1.0
+                    if (allParametersEntered && parameterN.value > parameterK.value && isProbabilityValid) {
                         encoder.init(parameterN.value, parameterK.value)
                         channel.init(parameterPe.value)
                         nextView<GeneratorMatrixView>()
