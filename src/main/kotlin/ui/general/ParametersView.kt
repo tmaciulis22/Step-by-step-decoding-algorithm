@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
 import tornadofx.*
-import ui.general.GeneratorMatrixView
 import util.nextView
 
 class ParametersView: View() {
@@ -17,9 +16,6 @@ class ParametersView: View() {
     private val parameterN = SimpleIntegerProperty()
     private val parameterK = SimpleIntegerProperty()
     private val parameterPe = SimpleDoubleProperty()
-
-    private val allParametersEntered: Boolean
-        get() = parameterN.value > 0 && parameterK.value > 0 && parameterPe.value > 0
 
     override val root = form {
         fieldset("Enter parameters:") {
@@ -36,7 +32,7 @@ class ParametersView: View() {
         hbox(alignment = Pos.CENTER_RIGHT) {
             button("Continue") {
                 action {
-                    if (allParametersEntered) {
+                    if (parameterN.value > 0 && parameterK.value > 0 && parameterPe.value > 0) {
                         encoder.init(parameterN.value, parameterK.value)
                         channel.init(parameterPe.value)
                         nextView<GeneratorMatrixView>()

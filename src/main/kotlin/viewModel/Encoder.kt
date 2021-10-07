@@ -12,7 +12,7 @@ class Encoder : ViewModel() {
     var parameterK: Int = 0
         private set
 
-    lateinit var generatorMatrix: Array<Array<Int>>
+    lateinit var generatorMatrix: MutableList<MutableList<Int>>
         private set
 
     fun init(parameterN: Int, parameterK: Int) {
@@ -20,7 +20,7 @@ class Encoder : ViewModel() {
         this.parameterN = parameterN
         this.parameterK = parameterK
 
-        generatorMatrix = Array(parameterK) { Array(parameterN) { 0 } }
+        generatorMatrix = MutableList(parameterK) { MutableList(parameterN) { 0 } }
         // generuojancioje matricoje nustatom vienetine matrica (irasomi 1 reikiamose pozicijose)
         setIdentityMatrix()
     }
@@ -34,7 +34,7 @@ class Encoder : ViewModel() {
         }
     }
 
-    fun encode(vector: Array<Int>): Array<Int> = generatorMatrix.multiply(vector)
+    fun encode(vector: List<Int>): List<Int> = generatorMatrix.multiply(vector)
 
     private fun setIdentityMatrix() {
         // zymeklis, kuris nurodo kur bus irasomas 1

@@ -6,17 +6,20 @@ import viewModel.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
 import ui.VectorChangeEvent
-import util.joinBitsToString
 import util.textFieldBit
 import util.nextView
+import viewModel.FirstScenarioViewModel
 
 class EncodeView : View() {
 
     private val encoder: Encoder by inject()
 
-    private lateinit var encodedVector: Array<Int>
-    private val encodedVectorProperty = SimpleStringProperty()
-    private lateinit var originalVector: Array<Int>
+    private val firstScenarioViewModel: FirstScenarioViewModel by inject()
+
+    private val encodedVector
+        get() = firstScenarioViewModel.encodedVector
+    private val originalVector
+        get() = firstScenarioViewModel.originalVector
 
     private val headerString = SimpleStringProperty()
 
@@ -27,39 +30,35 @@ class EncodeView : View() {
                 font = Font(20.0)
             }
         }
-        center = hbox(spacing = 100 / encoder.parameterK) {
-            subscribe<VectorChangeEvent> {
-                this@hbox.clear()
-                originalVector.forEachIndexed { index, value ->
-                    textFieldBit(value) {
-                        originalVector[index] = it
+        center = vbox(alignment = Pos.CENTER_RIGHT, spacing = 8) {
+            hbox(spacing = 100 / encoder.parameterK) {
+                subscribe<VectorChangeEvent> {
+                    this@hbox.clear()
+                    originalVector.value.forEachIndexed { index, value ->
+                        textFieldBit(value) {
+                            originalVector.value[index] = it
+                        }
                     }
+                }
+            }
+            button("Encode") {
+                action {
+                    encodedVector.set(encoder.encode(originalVector.value))
                 }
             }
         }
         bottom = vbox(alignment = Pos.CENTER_RIGHT) {
-            button("Encode") {
-                action {
-                    encodedVector = encoder.encode(originalVector)
-                    encodedVectorProperty.set(encodedVector.joinBitsToString())
-                }
-            }
             separator {
                 padding = insets(top = 10.0)
             }
             stackpane {
-                label(encodedVectorProperty) {
+                label(encodedVector) {
                     font = Font(18.0)
                 }
             }
             button("Send") {
                 action {
-                    nextView<ChannelView>(
-                        params = mapOf(
-                            ChannelView.PARAM_ORIGINAL_VECTOR to originalVector.copyOf(),
-                            ChannelView.PARAM_ENCODED_VECTOR to encodedVector.copyOf()
-                        )
-                    )
+                    nextView<ChannelView>()
                 }
             }
         }
@@ -67,9 +66,6 @@ class EncodeView : View() {
 
     override fun onDock() {
         super.onDock()
-        encodedVector = Array(encoder.parameterN) { 0 }
-        encodedVectorProperty.set(encodedVector.joinBitsToString())
-        originalVector = Array(encoder.parameterK) { 0 }
         headerString.set("Enter k=${encoder.parameterK} length vector:")
         fire(VectorChangeEvent())
     }

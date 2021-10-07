@@ -18,9 +18,8 @@ class GeneratorMatrixView : View() {
     private val headerString = SimpleStringProperty()
 
     override val root = borderpane {
-        top = hbox(alignment = Pos.CENTER) {
+        top = stackpane {
             label(headerString) {
-                useMaxWidth = true
                 font = Font(30.0)
             }
         }

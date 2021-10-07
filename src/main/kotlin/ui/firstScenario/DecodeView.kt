@@ -6,35 +6,57 @@ import javafx.scene.text.Font
 import tornadofx.*
 import ui.general.ParametersView
 import ui.general.ScenarioSelectorView
-import util.joinBitsToString
 import util.nextView
 import viewModel.Decoder
+import viewModel.FirstScenarioViewModel
 
 class DecodeView : View() {
 
     private val decoder: Decoder by inject()
 
-    private val originalVector: Array<Int> by param()
-    private val vectorFromChannel: Array<Int> by param()
+    private val firstScenarioViewModel: FirstScenarioViewModel by inject()
 
-    private var decodedVector: Array<Int>? = null
+    private val originalVector
+        get() = firstScenarioViewModel.originalVector
+    private val fromChannelVector
+        get() = firstScenarioViewModel.fromChannelVector
+    private val decodedVector
+        get() = firstScenarioViewModel.decodedVector
 
     private val originalVectorString = SimpleStringProperty()
-    private val decodedVectorString = SimpleStringProperty()
+    private val fromChannelVectorString = SimpleStringProperty()
 
     override val root = borderpane {
         padding = insets(10.0)
-        top = vbox(alignment = Pos.CENTER) {
+        top = stackpane {
             label("Decoding results") {
-                font = Font(24.0)
+                font = Font(26.0)
             }
         }
         center = vbox(alignment = Pos.CENTER_LEFT) {
-            label(originalVectorString) {
-                font = Font(18.0)
+            hbox {
+                label("Original vector: ") {
+                    font = Font(20.0)
+                }
+                label(originalVectorString) {
+                    font = Font(20.0)
+                }
             }
-            label(decodedVectorString) {
-                font = Font(18.0)
+            hbox {
+                label("From channel vector: ") {
+                    font = Font(20.0)
+                }
+                label(fromChannelVectorString) {
+                    font = Font(20.0)
+                }
+            }
+            hbox {
+                label("Decoded vector: ") {
+                    font = Font(20.0)
+                }
+                label(decodedVector) {
+                    font = Font(20.0)
+                }
             }
         }
         bottom = hbox(spacing = 6, alignment = Pos.CENTER_RIGHT) {
@@ -53,13 +75,8 @@ class DecodeView : View() {
 
     override fun onDock() {
         super.onDock()
-        decodedVector = decoder.decode(vectorFromChannel)
-        originalVectorString.set("Original vector: ${originalVector.joinBitsToString()}")
-        decodedVectorString.set("Decoded Vector: ${decodedVector?.joinBitsToString() ?: "Failed to decode"}")
-    }
-
-    companion object {
-        const val PARAM_ORIGINAL_VECTOR = "originalVector"
-        const val PARAM_VECTOR_FROM_CHANNEL = "vectorFromChannel"
+        originalVectorString.set(originalVector.value.toString())
+        fromChannelVectorString.set(fromChannelVector.value.toString())
+        decodedVector.set(decoder.decode(fromChannelVector.value))
     }
 }

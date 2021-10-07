@@ -1,6 +1,5 @@
 package ui.firstScenario
 
-import javafx.beans.property.SimpleObjectProperty
 import javafx.event.EventTarget
 import javafx.geometry.Pos
 import javafx.scene.text.Font
@@ -9,15 +8,20 @@ import tornadofx.*
 import ui.VectorChangeEvent
 import util.nextView
 import util.textFieldBit
+import viewModel.FirstScenarioViewModel
 
 class ChannelView : View() {
 
     private val channel: Channel by inject()
-    private val vectorProperty = SimpleObjectProperty<Array<Int>>()
-    private val mistakesProperty = SimpleObjectProperty<Array<Boolean>>()
 
-    private val originalVector: Array<Int> by param()
-    private val encodedVector: Array<Int> by param()
+    private val firstScenarioViewModel: FirstScenarioViewModel by inject()
+
+    private val encodedVector
+        get() = firstScenarioViewModel.encodedVector
+    private val fromChannelVector
+        get() = firstScenarioViewModel.fromChannelVector
+    private val mistakesVector
+        get() = firstScenarioViewModel.mistakesVector
 
     override val root = borderpane {
         padding = insets(10.0)
@@ -29,8 +33,8 @@ class ChannelView : View() {
         center = hbox {
             subscribe<VectorChangeEvent> {
                 this@hbox.clear()
-                vectorProperty.value.forEachIndexed { index, value ->
-                    getBitAndMistakeCell(value, mistakesProperty.value[index], index)
+                fromChannelVector.value.forEachIndexed { index, value ->
+                    getBitAndMistakeCell(value, mistakesVector.value[index], index)
                 }
             }
         }
@@ -41,12 +45,7 @@ class ChannelView : View() {
                 useMaxWidth = true
                 button("Decode") {
                     action {
-                        nextView<DecodeView>(
-                            params = mapOf(
-                                DecodeView.PARAM_ORIGINAL_VECTOR to originalVector.copyOf(),
-                                DecodeView.PARAM_VECTOR_FROM_CHANNEL to vectorProperty.value.copyOf()
-                            )
-                        )
+                        nextView<DecodeView>()
                     }
                 }
             }
@@ -55,9 +54,9 @@ class ChannelView : View() {
 
     override fun onDock() {
         super.onDock()
-        val vectorAndMistakes = channel.send(encodedVector)
-        vectorProperty.set(vectorAndMistakes?.first)
-        mistakesProperty.set(vectorAndMistakes?.second)
+        val vectorAndMistakes = channel.send(encodedVector.value.toMutableList())
+        fromChannelVector.set(vectorAndMistakes?.first?.toMutableList())
+        mistakesVector.set(vectorAndMistakes?.second?.toMutableList())
         fire(VectorChangeEvent())
     }
 
@@ -67,8 +66,8 @@ class ChannelView : View() {
         index: Int
     ) = vbox(alignment = Pos.CENTER) {
         textFieldBit(bit) {
-            vectorProperty.value[index] = it
-            mistakesProperty.value[index] = !mistakesProperty.value[index]
+            fromChannelVector.value[index] = it
+            mistakesVector.value[index] = !mistakesVector.value[index]
             fire(VectorChangeEvent())
         }
         getMistakeCell(isMistake)
@@ -80,9 +79,4 @@ class ChannelView : View() {
         text("X")
     else
         text("_")
-
-    companion object {
-        const val PARAM_ORIGINAL_VECTOR = "originalVector"
-        const val PARAM_ENCODED_VECTOR = "encodedVector"
-    }
 }
