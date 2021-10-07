@@ -1,4 +1,4 @@
 import tornadofx.App
-import ui.ParametersView
+import ui.general.ParametersView
 
 class App : App(ParametersView::class)

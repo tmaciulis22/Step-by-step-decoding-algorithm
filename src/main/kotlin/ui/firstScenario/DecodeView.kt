@@ -4,8 +4,8 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import ui.ParametersView
-import ui.ScenarioSelectorView
+import ui.general.ParametersView
+import ui.general.ScenarioSelectorView
 import util.joinBitsToString
 import util.nextView
 import viewModel.Decoder
@@ -20,7 +20,6 @@ class DecodeView : View() {
     private var decodedVector: Array<Int>? = null
 
     private val originalVectorString = SimpleStringProperty()
-    private val vectorFromChannelString = SimpleStringProperty()
     private val decodedVectorString = SimpleStringProperty()
 
     override val root = borderpane {
@@ -32,9 +31,6 @@ class DecodeView : View() {
         }
         center = vbox(alignment = Pos.CENTER_LEFT) {
             label(originalVectorString) {
-                font = Font(18.0)
-            }
-            label(vectorFromChannelString) {
                 font = Font(18.0)
             }
             label(decodedVectorString) {
@@ -59,7 +55,6 @@ class DecodeView : View() {
         super.onDock()
         decodedVector = decoder.decode(vectorFromChannel)
         originalVectorString.set("Original vector: ${originalVector.joinBitsToString()}")
-        vectorFromChannelString.set("Vector from channel: ${vectorFromChannel.joinBitsToString()}")
         decodedVectorString.set("Decoded Vector: ${decodedVector?.joinBitsToString() ?: "Failed to decode"}")
     }
 

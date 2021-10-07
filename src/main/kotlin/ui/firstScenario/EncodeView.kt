@@ -7,7 +7,7 @@ import javafx.scene.text.Font
 import tornadofx.*
 import ui.VectorChangeEvent
 import util.joinBitsToString
-import util.textFieldCell
+import util.textFieldBit
 import util.nextView
 
 class EncodeView : View() {
@@ -31,12 +31,8 @@ class EncodeView : View() {
             subscribe<VectorChangeEvent> {
                 this@hbox.clear()
                 originalVector.forEachIndexed { index, value ->
-                    textFieldCell(value) {
-                        if (it == "") return@textFieldCell
-
-                        val newIntValue = it.toInt()
-                        if (newIntValue == 0 || newIntValue == 1)
-                            originalVector[index] = newIntValue
+                    textFieldBit(value) {
+                        originalVector[index] = it
                     }
                 }
             }

@@ -8,7 +8,7 @@ import viewModel.Channel
 import tornadofx.*
 import ui.VectorChangeEvent
 import util.nextView
-import util.textFieldCell
+import util.textFieldBit
 
 class ChannelView : View() {
 
@@ -66,15 +66,10 @@ class ChannelView : View() {
         isMistake: Boolean,
         index: Int
     ) = vbox(alignment = Pos.CENTER) {
-        textFieldCell(bit) {
-            if (it == "") return@textFieldCell
-
-            val newIntValue = it.toInt()
-            if (newIntValue == 0 || newIntValue == 1) {
-                vectorProperty.value[index] = newIntValue
-                mistakesProperty.value[index] = !mistakesProperty.value[index]
-                fire(VectorChangeEvent())
-            }
+        textFieldBit(bit) {
+            vectorProperty.value[index] = it
+            mistakesProperty.value[index] = !mistakesProperty.value[index]
+            fire(VectorChangeEvent())
         }
         getMistakeCell(isMistake)
     }

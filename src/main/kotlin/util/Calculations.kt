@@ -1,26 +1,6 @@
 package util
 
-import javafx.event.EventTarget
-import tornadofx.*
 import javax.naming.OperationNotSupportedException
-import kotlin.reflect.KClass
-
-// GUI related extensions
-fun <T> EventTarget.textFieldCell(
-    value: T,
-    isEditable: Boolean = true,
-    changeListener: ((String) -> Unit)? = null
-) = textfield(value.toString()) {
-        this.isEditable = isEditable
-        textProperty().addListener { _, _, new ->
-            changeListener?.invoke(new)
-        }
-    }
-
-inline fun <reified T : UIComponent> View.nextView(
-    params: Map<String, Any>? = null,
-    transition: ViewTransition? = ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
-) = replaceWith(find(T::class, scope, params), transition)
 
 // Extension function used for multiplication of a matrix and a transposed vector
 // Arguments: Matrix[K, N] (Receiver type), vector[N]

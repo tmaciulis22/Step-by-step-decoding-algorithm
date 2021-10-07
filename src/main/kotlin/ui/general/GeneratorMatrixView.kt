@@ -1,4 +1,4 @@
-package ui
+package ui.general
 
 import javafx.beans.property.SimpleStringProperty
 import viewModel.Encoder
@@ -6,8 +6,9 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import viewModel.Decoder
 import tornadofx.*
+import ui.MatrixChangedEvent
 import util.nextView
-import util.textFieldCell
+import util.textFieldBit
 
 class GeneratorMatrixView : View() {
 
@@ -30,15 +31,11 @@ class GeneratorMatrixView : View() {
                     row {
                         row.forEachIndexed { colIndex, value ->
                             if (colIndex >= encoder.parameterK) {
-                                textFieldCell(value) {
-                                    if (it == "") return@textFieldCell
-
-                                    val newIntValue = it.toInt()
-                                    if (newIntValue == 0 || newIntValue == 1)
-                                        encoder.generatorMatrix[rowIndex][colIndex] = newIntValue
+                                textFieldBit(value) {
+                                    encoder.generatorMatrix[rowIndex][colIndex] = it.toInt()
                                 }
                             } else {
-                                textFieldCell(value, isEditable = false)
+                                textFieldBit(value, isEditable = false)
                             }
                         }
                     }

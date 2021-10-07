@@ -1,4 +1,4 @@
-package ui
+package ui.general
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font

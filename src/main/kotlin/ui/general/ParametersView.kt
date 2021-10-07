@@ -1,4 +1,4 @@
-package ui
+package ui.general
 
 import viewModel.Channel
 import viewModel.Encoder
@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
 import tornadofx.*
+import ui.general.GeneratorMatrixView
 import util.nextView
 
 class ParametersView: View() {
