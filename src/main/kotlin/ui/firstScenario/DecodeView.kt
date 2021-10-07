@@ -1,5 +1,6 @@
 package ui.firstScenario
 
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
@@ -16,7 +17,11 @@ class DecodeView : View() {
     private val originalVector: Array<Int> by param()
     private val vectorFromChannel: Array<Int> by param()
 
-    private val decodedVector: Array<Int>? = decoder.decode(vectorFromChannel)
+    private var decodedVector: Array<Int>? = null
+
+    private val originalVectorString = SimpleStringProperty()
+    private val vectorFromChannelString = SimpleStringProperty()
+    private val decodedVectorString = SimpleStringProperty()
 
     override val root = borderpane {
         padding = insets(10.0)
@@ -26,10 +31,13 @@ class DecodeView : View() {
             }
         }
         center = vbox(alignment = Pos.CENTER_LEFT) {
-            label("Original vector: ${originalVector.joinBitsToString()}") {
+            label(originalVectorString) {
                 font = Font(18.0)
             }
-            label("Decoded vector: ${decodedVector?.joinBitsToString() ?: "Failed to decode"}") {
+            label(vectorFromChannelString) {
+                font = Font(18.0)
+            }
+            label(decodedVectorString) {
                 font = Font(18.0)
             }
         }
@@ -45,6 +53,14 @@ class DecodeView : View() {
                 }
             }
         }
+    }
+
+    override fun onDock() {
+        super.onDock()
+        decodedVector = decoder.decode(vectorFromChannel)
+        originalVectorString.set("Original vector: ${originalVector.joinBitsToString()}")
+        vectorFromChannelString.set("Vector from channel: ${vectorFromChannel.joinBitsToString()}")
+        decodedVectorString.set("Decoded Vector: ${decodedVector?.joinBitsToString() ?: "Failed to decode"}")
     }
 
     companion object {

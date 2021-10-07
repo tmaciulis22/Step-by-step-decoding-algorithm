@@ -5,33 +5,39 @@ import javafx.geometry.Pos
 import viewModel.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
+import ui.VectorChangeEvent
 import util.joinBitsToString
 import util.textFieldCell
 import util.nextView
 
-class FirstScenarioView : View() {
+class EncodeView : View() {
 
     private val encoder: Encoder by inject()
 
-    private var encodedVector = Array(encoder.parameterN) { 0 }
-    private val encodedVectorProperty = SimpleStringProperty(encodedVector.joinBitsToString())
-    private val originalVector = Array(encoder.parameterK) { 0 }
+    private lateinit var encodedVector: Array<Int>
+    private val encodedVectorProperty = SimpleStringProperty()
+    private lateinit var originalVector: Array<Int>
+
+    private val headerString = SimpleStringProperty()
 
     override val root = borderpane {
         padding = insets(10.0)
         top = stackpane {
-            label("Enter k=${encoder.parameterK} length vector:") {
+            label(headerString) {
                 font = Font(20.0)
             }
         }
         center = hbox(spacing = 100 / encoder.parameterK) {
-            originalVector.forEachIndexed { index, value ->
-                textFieldCell(value) {
-                    if (it == "") return@textFieldCell
+            subscribe<VectorChangeEvent> {
+                this@hbox.clear()
+                originalVector.forEachIndexed { index, value ->
+                    textFieldCell(value) {
+                        if (it == "") return@textFieldCell
 
-                    val newIntValue = it.toInt()
-                    if (newIntValue == 0 || newIntValue == 1)
-                        originalVector[index] = newIntValue
+                        val newIntValue = it.toInt()
+                        if (newIntValue == 0 || newIntValue == 1)
+                            originalVector[index] = newIntValue
+                    }
                 }
             }
         }
@@ -61,5 +67,14 @@ class FirstScenarioView : View() {
                 }
             }
         }
+    }
+
+    override fun onDock() {
+        super.onDock()
+        encodedVector = Array(encoder.parameterN) { 0 }
+        encodedVectorProperty.set(encodedVector.joinBitsToString())
+        originalVector = Array(encoder.parameterK) { 0 }
+        headerString.set("Enter k=${encoder.parameterK} length vector:")
+        fire(VectorChangeEvent())
     }
 }

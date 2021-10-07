@@ -1,5 +1,6 @@
 package ui
 
+import javafx.beans.property.SimpleStringProperty
 import viewModel.Encoder
 import javafx.geometry.Pos
 import javafx.scene.text.Font
@@ -13,9 +14,11 @@ class GeneratorMatrixView : View() {
     private val encoder: Encoder by inject()
     private val decoder: Decoder by inject()
 
+    private val headerString = SimpleStringProperty()
+
     override val root = borderpane {
         top = hbox(alignment = Pos.CENTER) {
-            label("${encoder.parameterK}x${encoder.parameterN} matrix") {
+            label(headerString) {
                 useMaxWidth = true
                 font = Font(30.0)
             }
@@ -61,8 +64,7 @@ class GeneratorMatrixView : View() {
 
     override fun onDock() {
         super.onDock()
+        headerString.set("${encoder.parameterK}x${encoder.parameterN} matrix")
         fire(MatrixChangedEvent())
     }
 }
-
-class MatrixChangedEvent : FXEvent()

@@ -3,7 +3,7 @@ package ui
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import ui.firstScenario.FirstScenarioView
+import ui.firstScenario.EncodeView
 import util.nextView
 
 class ScenarioSelectorView : View() {
@@ -14,7 +14,7 @@ class ScenarioSelectorView : View() {
         }
         button("First - vector message") {
             action {
-                nextView<FirstScenarioView>()
+                nextView<EncodeView>()
             }
         }
         button("Second - text message") {

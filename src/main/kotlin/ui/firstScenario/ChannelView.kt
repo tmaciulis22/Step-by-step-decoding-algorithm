@@ -6,6 +6,7 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import viewModel.Channel
 import tornadofx.*
+import ui.VectorChangeEvent
 import util.nextView
 import util.textFieldCell
 
@@ -90,5 +91,3 @@ class ChannelView : View() {
         const val PARAM_ENCODED_VECTOR = "encodedVector"
     }
 }
-
-class VectorChangeEvent : FXEvent()
