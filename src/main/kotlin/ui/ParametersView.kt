@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
 import tornadofx.*
+import util.nextView
 
 class ParametersView: View() {
 
@@ -37,10 +38,7 @@ class ParametersView: View() {
                     if (allParametersEntered) {
                         encoder.init(parameterN.value, parameterK.value)
                         channel.init(parameterPe.value)
-                        replaceWith(
-                            GeneratorMatrixView::class,
-                            ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
-                        )
+                        nextView<GeneratorMatrixView>()
                     }
                 }
             }

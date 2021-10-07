@@ -10,24 +10,23 @@ fun <T> EventTarget.textFieldCell(
     value: T,
     isEditable: Boolean = true,
     changeListener: ((String) -> Unit)? = null
-) =
-    textfield(value.toString()) {
+) = textfield(value.toString()) {
         this.isEditable = isEditable
         textProperty().addListener { _, _, new ->
             changeListener?.invoke(new)
         }
     }
 
-inline fun <reified T : UIComponent> View.replaceWith(
-    params: Map<String, Any>,
-    transition: ViewTransition = ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
+inline fun <reified T : UIComponent> View.nextView(
+    params: Map<String, Any>? = null,
+    transition: ViewTransition? = ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
 ) = replaceWith(find(T::class, scope, params), transition)
 
 // Extension function used for multiplication of a matrix and a transposed vector
 // Arguments: Matrix[K, N] (Receiver type), vector[N]
 // Returns: Vector[K]
-fun Array<Array<Int>>.multiplyTransposed(vector: Array<Int>): Array<Int>? {
-    if (this[0].size != vector.size) return null
+fun Array<Array<Int>>.multiplyTransposed(vector: Array<Int>): Array<Int> {
+    if (this[0].size != vector.size) throw OperationNotSupportedException()
 
     val result = Array(this.size) { 0 }
 
@@ -62,16 +61,22 @@ fun Array<Array<Int>>.multiply(vector: Array<Int>): Array<Int> {
 // Extension function which checks if matrix rows include the vector provided in the arguments
 // Arguments: Any 2d Matrix[X, Y] (Receiver type), vector[Y]
 // Returns: Boolean
-fun Array<Array<Int>>.includes(vector: Array<Int>): Boolean = this.any { it.contentEquals(vector) }
+fun Array<Array<Int>>.includes(vector: Array<Int>): Boolean =
+    if (this[0].size != vector.size)
+        throw OperationNotSupportedException()
+    else
+        this.any { it.contentEquals(vector) }
+
+fun Array<Int>.joinBitsToString() = this.joinToString { it.toString() }
 
 // Extension function which calculates how many positive bits are in vector
 // Arguments: Any 1d vector (Receiver type)
 // Returns: Int
-fun Collection<Int>.getNumOfOnes(): Int {
-    if (this.isEmpty()) return 0
-
-    return this.reduce { acc, bit -> acc + bit }
-}
+fun Collection<Int>.getNumOfOnes(): Int =
+    if (this.isEmpty())
+        0
+    else
+        this.reduce { acc, bit -> acc + bit }
 
 // Extension function which reverses 0 bit to 1 and vice versa
 // Arguments: Any 0 or 1 bit (Receiver type)

@@ -6,6 +6,7 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import viewModel.Channel
 import tornadofx.*
+import util.nextView
 import util.textFieldCell
 
 class ChannelView : View() {
@@ -16,12 +17,6 @@ class ChannelView : View() {
 
     private val originalVector: Array<Int> by param()
     private val encodedVector: Array<Int> by param()
-
-    init {
-        val vectorAndMistakes = channel.send(encodedVector)
-        vectorProperty.set(vectorAndMistakes?.first)
-        mistakesProperty.set(vectorAndMistakes?.second)
-    }
 
     override val root = borderpane {
         padding = insets(10.0)
@@ -45,7 +40,12 @@ class ChannelView : View() {
                 useMaxWidth = true
                 button("Decode") {
                     action {
-                        TODO()
+                        nextView<DecodeView>(
+                            params = mapOf(
+                                DecodeView.PARAM_ORIGINAL_VECTOR to originalVector.copyOf(),
+                                DecodeView.PARAM_VECTOR_FROM_CHANNEL to vectorProperty.value.copyOf()
+                            )
+                        )
                     }
                 }
             }
@@ -54,6 +54,9 @@ class ChannelView : View() {
 
     override fun onDock() {
         super.onDock()
+        val vectorAndMistakes = channel.send(encodedVector)
+        vectorProperty.set(vectorAndMistakes?.first)
+        mistakesProperty.set(vectorAndMistakes?.second)
         fire(VectorChangeEvent())
     }
 

@@ -3,26 +3,50 @@ package viewModel
 import tornadofx.ViewModel
 import util.getNumOfOnes
 import util.includes
+import util.joinBitsToString
 import util.multiplyTransposed
 import kotlin.math.pow
 
 class Decoder : ViewModel() {
 
-    lateinit var controlMatrix: Array<Array<Int>>
-        private set
-    lateinit var syndromes: Array<Array<Int>>
-        private set
-    lateinit var classLeadersWeights: Array<Int>
-        private set
+    private lateinit var controlMatrix: Array<Array<Int>>
+
+    private var parameterK: Int = 0
+
+    // Map(Table) consisting of syndromes and corresponding class leader weights
+    private lateinit var syndromesAndWeightsMap: Map<String, Int>
 
     fun init(parameterN: Int, parameterK: Int, generatorMatrix: Array<Array<Int>>) {
+        this.parameterK = parameterK
         controlMatrix = Array(parameterN - parameterK) { Array(parameterN) { 0 } }
-        setTransposeMatrix(parameterK, generatorMatrix)
-        setIdentityMatrix(parameterK)
-        findSyndromesAndWeights(parameterN, parameterK)
+        setTransposeMatrix(generatorMatrix)
+        setIdentityMatrix()
+        findSyndromesAndWeights(parameterN)
     }
 
-    private fun setTransposeMatrix(parameterK: Int, generatorMatrix: Array<Array<Int>>) {
+    fun decode(vector: Array<Int>): Array<Int>? {
+        for (index in vector.indices) {
+            val syndromeString = controlMatrix.multiplyTransposed(vector).joinBitsToString()
+            val weight = syndromesAndWeightsMap[syndromeString] ?: return null
+
+            if (weight == 0) break
+
+            vector[index] += 1
+            if (vector[index] > 1) vector[index] = 0
+
+            val newSyndromeString = controlMatrix.multiplyTransposed(vector).joinBitsToString()
+            val newWeight = syndromesAndWeightsMap[newSyndromeString] ?: return null
+
+            if (newWeight >= weight) {
+                vector[index] -= 1
+                if (vector[index] < 0) vector[index] = 1
+            }
+        }
+
+        return vector.copyOfRange(0, parameterK)
+    }
+
+    private fun setTransposeMatrix(generatorMatrix: Array<Array<Int>>) {
         val generatorMatrixWithoutIdentity = generatorMatrix.map {
             it.drop(parameterK)
         }
@@ -33,7 +57,7 @@ class Decoder : ViewModel() {
         }
     }
 
-    private fun setIdentityMatrix(parameterK: Int) {
+    private fun setIdentityMatrix() {
         // zymeklis, kuris nurodo kur bus irasomas 1
         var currentPos = parameterK
         controlMatrix.forEach { row ->
@@ -42,11 +66,11 @@ class Decoder : ViewModel() {
         }
     }
 
-    private fun findSyndromesAndWeights(parameterN: Int, parameterK: Int) {
+    private fun findSyndromesAndWeights(parameterN: Int) {
         // Kiek is viso klasiu yra, apskaiciuojama pagal formule is konspekto
         val numOfClasses = 2.0.pow((parameterN - parameterK).toDouble()).toInt()
-        syndromes = Array(numOfClasses) { Array(parameterN - parameterK ) { 0 } }
-        classLeadersWeights = Array(numOfClasses) { 0 }
+        val syndromes = Array(numOfClasses) { Array(parameterN - parameterK ) { 0 } }
+        val classLeadersWeights = Array(numOfClasses) { 0 }
 
         var numOfClassesFound = 1
         var numOfPositiveBits = 1
@@ -56,7 +80,7 @@ class Decoder : ViewModel() {
                 if (numOfClassesFound >= numOfClasses) return@forEach
 
                 val syndrome = controlMatrix.multiplyTransposed(vector)
-                if (syndrome != null && !syndromes.includes(syndrome)) {
+                if (!syndromes.includes(syndrome)) {
                     syndromes[numOfClassesFound] = syndrome
                     classLeadersWeights[numOfClassesFound] = vector.toList().getNumOfOnes()
                     numOfClassesFound++
@@ -64,6 +88,13 @@ class Decoder : ViewModel() {
             }
             numOfPositiveBits++
         }
+
+        val table = mutableMapOf<String, Int>()
+        syndromes.forEachIndexed{ index, syndrome ->
+            val syndromeString = syndrome.joinBitsToString()
+            table[syndromeString] = classLeadersWeights[index]
+        }
+        syndromesAndWeightsMap = table
     }
 
     private fun getVectors(

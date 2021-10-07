@@ -5,6 +5,7 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import viewModel.Decoder
 import tornadofx.*
+import util.nextView
 import util.textFieldCell
 
 class GeneratorMatrixView : View() {
@@ -51,10 +52,7 @@ class GeneratorMatrixView : View() {
             button("Continue") {
                 action {
                     decoder.init(encoder.parameterN, encoder.parameterK, encoder.generatorMatrix)
-                    replaceWith(
-                        ScenarioSelectorView::class,
-                        ViewTransition.Slide(0.3.seconds, ViewTransition.Direction.LEFT)
-                    )
+                    nextView<ScenarioSelectorView>()
                 }
             }
             padding = insets(bottom = 20.0)

@@ -5,15 +5,16 @@ import javafx.geometry.Pos
 import viewModel.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
+import util.joinBitsToString
 import util.textFieldCell
-import util.replaceWith
+import util.nextView
 
 class FirstScenarioView : View() {
 
     private val encoder: Encoder by inject()
 
     private var encodedVector = Array(encoder.parameterN) { 0 }
-    private val encodedVectorProperty = SimpleStringProperty(encodedVector.toList().toString())
+    private val encodedVectorProperty = SimpleStringProperty(encodedVector.joinBitsToString())
     private val originalVector = Array(encoder.parameterK) { 0 }
 
     override val root = borderpane {
@@ -38,7 +39,7 @@ class FirstScenarioView : View() {
             button("Encode") {
                 action {
                     encodedVector = encoder.encode(originalVector)
-                    encodedVectorProperty.set(encodedVector.toList().toString())
+                    encodedVectorProperty.set(encodedVector.joinBitsToString())
                 }
             }
             separator {
@@ -51,10 +52,10 @@ class FirstScenarioView : View() {
             }
             button("Send") {
                 action {
-                    replaceWith<ChannelView>(
+                    nextView<ChannelView>(
                         params = mapOf(
-                            ChannelView.PARAM_ORIGINAL_VECTOR to originalVector,
-                            ChannelView.PARAM_ENCODED_VECTOR to encodedVector
+                            ChannelView.PARAM_ORIGINAL_VECTOR to originalVector.copyOf(),
+                            ChannelView.PARAM_ENCODED_VECTOR to encodedVector.copyOf()
                         )
                     )
                 }

@@ -34,11 +34,7 @@ class Encoder : ViewModel() {
         }
     }
 
-    fun encode(vector: Array<Int>): Array<Int> =
-        if (vector.size > parameterK)
-            throw OperationNotSupportedException()
-        else
-            generatorMatrix.multiply(vector)
+    fun encode(vector: Array<Int>): Array<Int> = generatorMatrix.multiply(vector)
 
     private fun setIdentityMatrix() {
         // zymeklis, kuris nurodo kur bus irasomas 1
