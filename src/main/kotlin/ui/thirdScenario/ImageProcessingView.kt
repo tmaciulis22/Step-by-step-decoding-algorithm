@@ -1,18 +1,18 @@
-package ui.secondScenario
+package ui.thirdScenario
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
 import util.nextView
-import viewModel.SecondScenarioViewModel
+import viewModel.ThirdScenarioViewModel
 
-class TextProcessingView : View() {
+class ImageProcessingView : View() {
 
-    private val secondScenarioViewModel: SecondScenarioViewModel by inject()
+    private val thirdScenarioViewModel: ThirdScenarioViewModel by inject()
 
     override val root = vbox(alignment = Pos.CENTER, spacing = 8) {
         padding = insets(16.0)
-        label("Processing text...") {
+        label("Processing image...") {
             font = Font(20.0)
         }
         progressbar {
@@ -23,9 +23,9 @@ class TextProcessingView : View() {
     override fun onDock() {
         super.onDock()
         runAsync {
-            secondScenarioViewModel.processText()
+            thirdScenarioViewModel.processImage()
         } ui {
-            nextView<TextProcessingResultsView>()
+            nextView<ImageProcessingResultsView>()
         }
     }
 }

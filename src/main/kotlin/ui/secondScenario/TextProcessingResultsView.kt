@@ -10,16 +10,16 @@ import ui.general.ParametersView
 import ui.general.ScenarioSelectorView
 import util.nextView
 
-class ResultsView : View() {
+class TextProcessingResultsView : View() {
 
     private val secondScenarioViewModel: SecondScenarioViewModel by inject()
 
     private val originalText
-        get() = secondScenarioViewModel.originalText
+        get() = secondScenarioViewModel.originalData
     private val notCodedProcessedText
-        get() = secondScenarioViewModel.notCodedProcessedText
+        get() = secondScenarioViewModel.notCodedProcessedData
     private val codedProcessedText
-        get() = secondScenarioViewModel.codedProcessedText
+        get() = secondScenarioViewModel.codedProcessedData
 
     override val root = borderpane {
         padding = insets(10)
@@ -31,6 +31,7 @@ class ResultsView : View() {
                 scrollpane {
                     text(originalText) {
                         this.wrappingWidth = WINDOW_WIDTH * 0.5
+                        font = Font(18.0)
                     }
                 }
             }
@@ -41,6 +42,7 @@ class ResultsView : View() {
                 scrollpane {
                     text(notCodedProcessedText) {
                         this.wrappingWidth = WINDOW_WIDTH * 0.5
+                        font = Font(18.0)
                     }
                 }
             }
@@ -51,6 +53,7 @@ class ResultsView : View() {
                 scrollpane {
                     text(codedProcessedText) {
                         this.wrappingWidth = WINDOW_WIDTH * 0.5
+                        font = Font(18.0)
                     }
                 }
             }

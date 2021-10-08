@@ -11,7 +11,7 @@ class TextInputView : View() {
     private val secondScenarioViewModel: SecondScenarioViewModel by inject()
 
     private val originalText
-        get() = secondScenarioViewModel.originalText
+        get() = secondScenarioViewModel.originalData
 
     override val root = borderpane {
         padding = insets(10.0)
