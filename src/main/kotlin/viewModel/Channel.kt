@@ -12,18 +12,29 @@ class Channel : ViewModel() {
         this.parameterPe = parameterPe
     }
 
-    fun send(vector: MutableList<Int>?): Pair<List<Int>, List<Boolean>>? {
-        vector ?: return null
+    // Sends a vector through channel and marks any mistakes made in vector
+    // Arguments: vector - binary vector message
+    // Returns: Pair consisting of: a new possibly modified vector, a list of mistakes made expressed in boolean values
+    fun sendAndMarkMistakes(vector: List<Int>): Pair<List<Int>, List<Boolean>> {
+        val vectorToReturn = mutableListOf<Int>()
+        val mistakes = mutableListOf<Boolean>()
 
-        val mistakes = MutableList(vector.size) { false }
-        for (index in vector.indices) {
-            val mistakeProbability = Random.nextDouble(0.0, 1.0)
-            if (mistakeProbability < parameterPe) {
-                vector[index] = vector[index].reverseBit()
-                mistakes[index] = true
-            }
+        vector.forEach {
+            val isMistake = Random.nextDouble(0.0, 1.0) < parameterPe
+            vectorToReturn.add(if (isMistake) it.reverseBit() else it)
+            mistakes.add(isMistake)
         }
 
-        return Pair(vector, mistakes)
+        return Pair(vectorToReturn, mistakes)
+    }
+
+    // Sends a vector through channel
+    // Arguments: vector - binary vector message
+    // Returns: possibly modified binary vector message
+    fun send(vector: List<Int>): List<Int> = vector.map {
+        if (Random.nextDouble(0.0, 1.0) < parameterPe)
+            it.reverseBit()
+        else
+            it
     }
 }

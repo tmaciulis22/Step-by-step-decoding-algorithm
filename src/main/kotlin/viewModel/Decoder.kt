@@ -22,26 +22,28 @@ class Decoder : ViewModel() {
         findSyndromesAndWeights(parameterN)
     }
 
-    fun decode(vector: MutableList<Int>): List<Int>? {
-        for (index in vector.indices) {
-            val syndromeString = controlMatrix.multiplyTransposed(vector).toString()
-            val weight = syndromesAndWeightsMap[syndromeString] ?: return null
+    fun decode(vector: List<Int>): List<Int> {
+        val vectorToDecode = vector.toMutableList()
+
+        for (index in vectorToDecode.indices) {
+            val syndromeString = controlMatrix.multiplyTransposed(vectorToDecode).toString()
+            val weight = syndromesAndWeightsMap[syndromeString] ?: return listOf()
 
             if (weight == 0) break
 
-            vector[index] += 1
-            if (vector[index] > 1) vector[index] = 0
+            vectorToDecode[index] += 1
+            if (vectorToDecode[index] > 1) vectorToDecode[index] = 0
 
-            val newSyndromeString = controlMatrix.multiplyTransposed(vector).toString()
-            val newWeight = syndromesAndWeightsMap[newSyndromeString] ?: return null
+            val newSyndromeString = controlMatrix.multiplyTransposed(vectorToDecode).toString()
+            val newWeight = syndromesAndWeightsMap[newSyndromeString] ?: return listOf()
 
             if (newWeight >= weight) {
-                vector[index] -= 1
-                if (vector[index] < 0) vector[index] = 1
+                vectorToDecode[index] -= 1
+                if (vectorToDecode[index] < 0) vectorToDecode[index] = 1
             }
         }
 
-        return vector.subList(0, parameterK).toList()
+        return vectorToDecode.subList(0, parameterK).toList()
     }
 
     private fun setTransposeMatrix(generatorMatrix: List<List<Int>>) {

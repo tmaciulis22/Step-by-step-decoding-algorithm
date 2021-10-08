@@ -4,14 +4,18 @@ import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
 import ui.firstScenario.EncodeView
+import ui.secondScenario.TextInputView
 import util.nextView
 import viewModel.Encoder
 import viewModel.FirstScenarioViewModel
+import viewModel.SecondScenarioViewModel
 
 class ScenarioSelectorView : View() {
 
     private val encoder: Encoder by inject()
+
     private val firstScenarioViewModel: FirstScenarioViewModel by inject()
+    private val secondScenarioViewModel: SecondScenarioViewModel by inject()
 
     override val root = vbox(10, alignment = Pos.CENTER) {
         label("Select scenario") {
@@ -25,7 +29,8 @@ class ScenarioSelectorView : View() {
         }
         button("Second - text message") {
             action {
-                TODO()
+                secondScenarioViewModel.init()
+                nextView<TextInputView>()
             }
         }
         button("Third - image message") {

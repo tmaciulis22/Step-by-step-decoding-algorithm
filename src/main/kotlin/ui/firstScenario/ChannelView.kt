@@ -56,9 +56,9 @@ class ChannelView : View() {
 
     override fun onDock() {
         super.onDock()
-        val vectorAndMistakes = channel.send(encodedVector.value.toMutableList())
-        fromChannelVector.set(vectorAndMistakes?.first?.toMutableList())
-        mistakesVector.set(vectorAndMistakes?.second?.toMutableList())
+        val vectorAndMistakes = channel.sendAndMarkMistakes(encodedVector.value)
+        fromChannelVector.set(vectorAndMistakes.first.toMutableList())
+        mistakesVector.set(vectorAndMistakes.second.toMutableList())
         fire(VectorChangeEvent())
     }
 
