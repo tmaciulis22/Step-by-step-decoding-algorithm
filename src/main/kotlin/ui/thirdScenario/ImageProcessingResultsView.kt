@@ -23,23 +23,27 @@ class ImageProcessingResultsView : View() {
 
     override val root = borderpane {
         padding = insets(10)
-        center = vbox(spacing = 2, alignment = Pos.CENTER) {
-            label("Original image:") {
-                font = Font(20.0)
+        center = scrollpane {
+            hbox(spacing = 8, alignment = Pos.CENTER) {
+                vbox(spacing = 2, alignment = Pos.CENTER) {
+                    label("Original image:") {
+                        font = Font(20.0)
+                    }
+                    imageview(originalImage)
+                }
+                vbox(spacing = 2, alignment = Pos.CENTER) {
+                    label("Not encoded/decoded image:") {
+                        font = Font(20.0)
+                    }
+                    imageview(notCodedProcessedImage)
+                }
+                vbox(spacing = 2, alignment = Pos.CENTER) {
+                    label("Encoded/decoded image:") {
+                        font = Font(20.0)
+                    }
+                    imageview(codedProcessedImage)
+                }
             }
-            imageview(originalImage)
-        }
-        vbox(spacing = 2, alignment = Pos.CENTER) {
-            label("Not encoded/decoded image:") {
-                font = Font(20.0)
-            }
-            imageview(notCodedProcessedImage)
-        }
-        vbox(spacing = 2, alignment = Pos.CENTER) {
-            label("Encoded/decoded image:") {
-                font = Font(20.0)
-            }
-            imageview(codedProcessedImage)
         }
         bottom = hbox(spacing = 4, alignment = Pos.CENTER_RIGHT) {
             padding = insets(top = 6)
@@ -58,8 +62,8 @@ class ImageProcessingResultsView : View() {
 
     override fun onDock() {
         super.onDock()
-        currentWindow?.width = WINDOW_WIDTH * 1.75
-        currentWindow?.height = originalImage.value.height
+        currentWindow?.width = originalImage.value.width * 3
+        currentWindow?.height = originalImage.value.height + 175
     }
 
     override fun onUndock() {

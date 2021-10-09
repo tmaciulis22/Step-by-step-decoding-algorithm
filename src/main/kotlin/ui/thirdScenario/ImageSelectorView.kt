@@ -12,7 +12,7 @@ class ImageSelectorView : View() {
 
     private val thirdScenarioViewModel: ThirdScenarioViewModel by inject()
 
-    private val originalImage
+    private val imageFile
         get() = thirdScenarioViewModel.imageFile
 
     private val enableNextButton = SimpleBooleanProperty(false)
@@ -27,11 +27,11 @@ class ImageSelectorView : View() {
         center = stackpane {
             button("Choose") {
                 action {
-                    val imageFile =chooseFile(
+                    val files = chooseFile(
                         filters = arrayOf(FileChooser.ExtensionFilter("bitmap", listOf("*.bmp")))
                     )
-                    if (imageFile.isNotEmpty()) {
-                        originalImage.set(imageFile[0])
+                    if (files.isNotEmpty()) {
+                        imageFile.set(files[0])
                         enableNextButton.set(true)
                     }
                 }

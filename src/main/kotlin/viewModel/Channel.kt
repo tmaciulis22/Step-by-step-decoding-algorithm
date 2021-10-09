@@ -8,13 +8,14 @@ class Channel : ViewModel() {
 
     private var parameterPe = 0.0
 
+    // Initializes the channel with Pe mistake probability parameter
     fun init(parameterPe: Double) {
         this.parameterPe = parameterPe
     }
 
-    // Sends a vector through channel and marks any mistakes made in vector
+    // Sends a vector through channel and marks any mistakes made in vector. Used by first scenario
     // Arguments: vector - binary vector message
-    // Returns: Pair consisting of: a new possibly modified vector, a list of mistakes made expressed in boolean values
+    // Returns: Pair consisting of: a new possibly modified vector, a list of mistakes made in vector expressed in boolean values
     fun sendAndMarkMistakes(vector: List<Int>): Pair<List<Int>, List<Boolean>> {
         val vectorToReturn = mutableListOf<Int>()
         val mistakes = mutableListOf<Boolean>()

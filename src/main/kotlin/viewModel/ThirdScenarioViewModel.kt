@@ -14,7 +14,7 @@ class ThirdScenarioViewModel : ProcessingViewModel<Image>() {
     private lateinit var headerInfo: ByteArray
 
     fun processImage() {
-        val imageByteArrayWithoutHeader = setHeaderInfoAndReturnRemainingBytes()
+        val imageByteArrayWithoutHeader = setHeaderInfoAndOriginalData()
         val imageBinaryString = bytesToBinaryString(imageByteArrayWithoutHeader)
         val binaryVectors = binaryStringToBinaryVectors(imageBinaryString)
         val fromChannelMessageVectors = binaryVectors.map { channel.send(it) }
@@ -26,15 +26,19 @@ class ThirdScenarioViewModel : ProcessingViewModel<Image>() {
         codedProcessedData.set(binaryVectorsToImage(decodedBinaryVectors))
     }
 
-    private fun setHeaderInfoAndReturnRemainingBytes(): ByteArray =
+    private fun setHeaderInfoAndOriginalData(): ByteArray {
+        val imageByteArray: ByteArray
         FileInputStream(imageFile.value).use {
-            originalData.set(Image(it))
-
-            val imageByteArray = it.readBytes()
-            headerInfo = imageByteArray.take(BMP_HEADER_SIZE_IN_BYTES).toByteArray()
-
-            return imageByteArray.drop(BMP_HEADER_SIZE_IN_BYTES).toByteArray()
+            imageByteArray = it.readBytes()
         }
+
+        ByteArrayInputStream(imageByteArray).use {
+            originalData.set(Image(it))
+        }
+        headerInfo = imageByteArray.take(BMP_HEADER_SIZE_IN_BYTES).toByteArray()
+
+        return imageByteArray.drop(BMP_HEADER_SIZE_IN_BYTES).toByteArray()
+    }
 
     private fun binaryVectorsToImage(binaryVectors: List<List<Int>>): Image {
         val bytes = binaryVectorsToBytes(binaryVectors).toMutableList()
@@ -42,9 +46,10 @@ class ThirdScenarioViewModel : ProcessingViewModel<Image>() {
         val bytesWithHeader = headerInfo.toMutableList()
         bytesWithHeader.addAll(bytes)
         val byteArray = bytesWithHeader.toByteArray()
-        val byteArrayStream = ByteArrayInputStream(byteArray)
 
-        return Image(byteArrayStream)
+        ByteArrayInputStream(byteArray).use {
+            return Image(it)
+        }
     }
 
     companion object {
