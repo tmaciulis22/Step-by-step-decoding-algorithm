@@ -16,6 +16,7 @@ class FirstScenarioViewModel : ViewModel() {
     // Decoded vector (it was decoded from fromChannelVector)
     val decodedVector = SimpleObjectProperty<List<Int>>()
 
+    // Initializes the view model with parameters N and K
     fun init(parameterN: Int, parameterK: Int) {
         originalVector.set(MutableList(parameterK) { 0 })
         encodedVector.set(List(parameterN) { 0 })

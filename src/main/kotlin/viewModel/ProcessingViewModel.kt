@@ -12,7 +12,7 @@ abstract class ProcessingViewModel<T> : ViewModel() {
     // Data(Text/Image) which was encoded, sent to channel and decoded
     val codedProcessedData = SimpleObjectProperty<T>()
 
-    // How many zeros were added to the last text vector, so it would be of size K
+    // How many zeros were added to the last message vector, so it would be of size K
     private var zeroesAppended = 0
 
     protected val encoder: Encoder by inject()
