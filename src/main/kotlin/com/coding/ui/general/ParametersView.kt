@@ -1,13 +1,13 @@
-package com.example.ui.general
+package com.coding.ui.general
 
-import com.example.viewModel.Channel
-import com.example.viewModel.Encoder
+import com.coding.viewModel.Channel
+import com.coding.viewModel.Encoder
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
 import tornadofx.*
-import com.example.util.nextView
+import com.coding.util.nextView
 
 // GUI class for inputting code parameters N and K, as well as channel parameter Pe.
 // Once Continue button is pressed the parameters' validity is checked and encoder with channel are initialized

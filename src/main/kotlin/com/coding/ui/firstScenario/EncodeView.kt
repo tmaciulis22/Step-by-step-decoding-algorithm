@@ -1,14 +1,14 @@
-package com.example.ui.firstScenario
+package com.coding.ui.firstScenario
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
-import com.example.viewModel.Encoder
+import com.coding.viewModel.Encoder
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.ui.VectorChangeEvent
-import com.example.util.textFieldBit
-import com.example.util.nextView
-import com.example.viewModel.FirstScenarioViewModel
+import com.coding.ui.VectorChangeEvent
+import com.coding.util.textFieldBit
+import com.coding.util.nextView
+import com.coding.viewModel.FirstScenarioViewModel
 
 // GUI class for inputting message vector of length K and encoding it.
 class EncodeView : View() {

@@ -1,4 +1,4 @@
-package com.example.util
+package com.coding.util
 
 import javax.naming.OperationNotSupportedException
 

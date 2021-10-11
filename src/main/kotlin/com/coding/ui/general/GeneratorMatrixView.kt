@@ -1,14 +1,14 @@
-package com.example.ui.general
+package com.coding.ui.general
 
 import javafx.beans.property.SimpleStringProperty
-import com.example.viewModel.Encoder
+import com.coding.viewModel.Encoder
 import javafx.geometry.Pos
 import javafx.scene.text.Font
-import com.example.viewModel.Decoder
+import com.coding.viewModel.Decoder
 import tornadofx.*
-import com.example.ui.MatrixChangedEvent
-import com.example.util.nextView
-import com.example.util.textFieldBit
+import com.coding.ui.MatrixChangedEvent
+import com.coding.util.nextView
+import com.coding.util.textFieldBit
 
 // GUI class for inputting generator matrix. First K columns are not editable as they are made up of identity matrix.
 // User can choose if they want to use random bit values in other N-K columns, or they can input those values themselves.

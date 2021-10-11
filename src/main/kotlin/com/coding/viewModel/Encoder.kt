@@ -1,7 +1,7 @@
-package com.example.viewModel
+package com.coding.viewModel
 
 import tornadofx.ViewModel
-import com.example.util.multiply
+import com.coding.util.multiply
 import kotlin.random.Random
 
 class Encoder : ViewModel() {

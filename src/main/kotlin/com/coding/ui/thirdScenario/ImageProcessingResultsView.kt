@@ -1,14 +1,14 @@
-package com.example.ui.thirdScenario
+package com.coding.ui.thirdScenario
 
-import com.example.MyApp.Companion.WINDOW_HEIGHT
-import com.example.MyApp.Companion.WINDOW_WIDTH
+import com.coding.MyApp.Companion.WINDOW_HEIGHT
+import com.coding.MyApp.Companion.WINDOW_WIDTH
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.ui.general.ParametersView
-import com.example.ui.general.ScenarioSelectorView
-import com.example.util.nextView
-import com.example.viewModel.ThirdScenarioViewModel
+import com.coding.ui.general.ParametersView
+import com.coding.ui.general.ScenarioSelectorView
+import com.coding.util.nextView
+import com.coding.viewModel.ThirdScenarioViewModel
 
 // GUI class which shows the image processing (encoding, decoding, etc.) results.
 // Original image, the image which was sent through channel without coding, and also encoded/decoded image are shown as well for comparison.

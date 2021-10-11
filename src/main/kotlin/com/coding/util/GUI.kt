@@ -1,4 +1,4 @@
-package com.example.util
+package com.coding.util
 
 import javafx.event.EventTarget
 import tornadofx.*

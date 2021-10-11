@@ -1,12 +1,12 @@
-package com.example.ui.thirdScenario
+package com.coding.ui.thirdScenario
 
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import javafx.stage.FileChooser
 import tornadofx.*
-import com.example.util.nextView
-import com.example.viewModel.ThirdScenarioViewModel
+import com.coding.util.nextView
+import com.coding.viewModel.ThirdScenarioViewModel
 
 // GUI class for selecting image for encoding/decoding.
 // User clicks the Choose button and file dialog is opened, where user can select the bmp image.

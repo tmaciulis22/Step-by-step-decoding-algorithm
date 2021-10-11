@@ -1,6 +1,6 @@
-package com.example
+package com.coding
 
-import com.example.ui.general.ParametersView
+import com.coding.ui.general.ParametersView
 import javafx.stage.Stage
 import tornadofx.App
 

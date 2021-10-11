@@ -1,8 +1,8 @@
-package com.example.viewModel
+package com.coding.viewModel
 
 import tornadofx.ViewModel
-import com.example.util.getNumOfOnes
-import com.example.util.multiplyTransposed
+import com.coding.util.getNumOfOnes
+import com.coding.util.multiplyTransposed
 import kotlin.math.pow
 
 class Decoder : ViewModel() {

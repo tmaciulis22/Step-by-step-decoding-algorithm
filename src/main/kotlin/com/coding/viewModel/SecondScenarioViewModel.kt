@@ -1,4 +1,4 @@
-package com.example.viewModel
+package com.coding.viewModel
 
 class SecondScenarioViewModel : ProcessingViewModel<String>() {
 

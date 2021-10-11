@@ -1,14 +1,14 @@
-package com.example.ui.firstScenario
+package com.coding.ui.firstScenario
 
 import javafx.event.EventTarget
 import javafx.geometry.Pos
 import javafx.scene.text.Font
-import com.example.viewModel.Channel
+import com.coding.viewModel.Channel
 import tornadofx.*
-import com.example.ui.VectorChangeEvent
-import com.example.util.nextView
-import com.example.util.textFieldBit
-import com.example.viewModel.FirstScenarioViewModel
+import com.coding.ui.VectorChangeEvent
+import com.coding.util.nextView
+import com.coding.util.textFieldBit
+import com.coding.viewModel.FirstScenarioViewModel
 
 // GUI class for showing the encoded vector which was sent through channel.
 // It also shows where mistakes were made. It is possible for user to change the vector's values,

@@ -1,10 +1,10 @@
-package com.example.ui.secondScenario
+package com.coding.ui.secondScenario
 
-import com.example.util.nextView
+import com.coding.util.nextView
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.viewModel.SecondScenarioViewModel
+import com.coding.viewModel.SecondScenarioViewModel
 
 // GUI class which shows progress bar as long as the previously inputted text is being processed(encoded, decoded, etc.)
 // Once the processing is done, the next view with results is automatically shown.

@@ -1,10 +1,10 @@
-package com.example.ui.thirdScenario
+package com.coding.ui.thirdScenario
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.util.nextView
-import com.example.viewModel.ThirdScenarioViewModel
+import com.coding.util.nextView
+import com.coding.viewModel.ThirdScenarioViewModel
 
 // GUI class which shows progress bar as long as the previously selected image is being processed(encoded, decoded, etc.)
 // Once the processing is done, the next view with results is automatically shown.

@@ -1,14 +1,14 @@
-package com.example.ui.secondScenario
+package com.coding.ui.secondScenario
 
-import com.example.MyApp.Companion.WINDOW_WIDTH
-import com.example.MyApp.Companion.WINDOW_HEIGHT
+import com.coding.MyApp.Companion.WINDOW_WIDTH
+import com.coding.MyApp.Companion.WINDOW_HEIGHT
 import javafx.geometry.Pos
 import tornadofx.*
-import com.example.viewModel.SecondScenarioViewModel
+import com.coding.viewModel.SecondScenarioViewModel
 import javafx.scene.text.Font
-import com.example.ui.general.ParametersView
-import com.example.ui.general.ScenarioSelectorView
-import com.example.util.nextView
+import com.coding.ui.general.ParametersView
+import com.coding.ui.general.ScenarioSelectorView
+import com.coding.util.nextView
 
 // GUI class which shows the text processing (encoding, decoding, etc.) results.
 // Original text, the text which was sent through channel without coding, and also encoded/decoded text are shown as well for comparison.

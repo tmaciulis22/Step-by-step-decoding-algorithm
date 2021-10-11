@@ -1,10 +1,10 @@
-package com.example.ui.secondScenario
+package com.coding.ui.secondScenario
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.util.nextView
-import com.example.viewModel.SecondScenarioViewModel
+import com.coding.util.nextView
+import com.coding.viewModel.SecondScenarioViewModel
 
 // GUI class for inputting text which will be encoded/decoded.
 class TextInputView : View() {

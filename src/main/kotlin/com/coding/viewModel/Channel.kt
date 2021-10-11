@@ -1,7 +1,7 @@
-package com.example.viewModel
+package com.coding.viewModel
 
 import tornadofx.ViewModel
-import com.example.util.reverseBit
+import com.coding.util.reverseBit
 import kotlin.random.Random
 
 class Channel : ViewModel() {

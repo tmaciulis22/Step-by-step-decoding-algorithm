@@ -1,14 +1,14 @@
-package com.example.ui.firstScenario
+package com.coding.ui.firstScenario
 
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.ui.general.ParametersView
-import com.example.ui.general.ScenarioSelectorView
-import com.example.util.nextView
-import com.example.viewModel.Decoder
-import com.example.viewModel.FirstScenarioViewModel
+import com.coding.ui.general.ParametersView
+import com.coding.ui.general.ScenarioSelectorView
+import com.coding.util.nextView
+import com.coding.viewModel.Decoder
+import com.coding.viewModel.FirstScenarioViewModel
 
 // GUI class for showing the decoded message vector.
 // Original message vector and the encoded vector which was sent through channel are shown as well for comparison.

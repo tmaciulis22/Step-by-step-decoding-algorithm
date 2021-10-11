@@ -1,16 +1,16 @@
-package com.example.ui.general
+package com.coding.ui.general
 
 import javafx.geometry.Pos
 import javafx.scene.text.Font
 import tornadofx.*
-import com.example.ui.firstScenario.EncodeView
-import com.example.ui.secondScenario.TextInputView
-import com.example.ui.thirdScenario.ImageSelectorView
-import com.example.util.nextView
-import com.example.viewModel.Encoder
-import com.example.viewModel.FirstScenarioViewModel
-import com.example.viewModel.SecondScenarioViewModel
-import com.example.viewModel.ThirdScenarioViewModel
+import com.coding.ui.firstScenario.EncodeView
+import com.coding.ui.secondScenario.TextInputView
+import com.coding.ui.thirdScenario.ImageSelectorView
+import com.coding.util.nextView
+import com.coding.viewModel.Encoder
+import com.coding.viewModel.FirstScenarioViewModel
+import com.coding.viewModel.SecondScenarioViewModel
+import com.coding.viewModel.ThirdScenarioViewModel
 
 // GUI class for selecting scenario.
 // Once scenario is selected appropriate business logic ViewModel is initialized.

@@ -1,4 +1,4 @@
-package com.example.ui
+package com.coding.ui
 
 import tornadofx.FXEvent
 
