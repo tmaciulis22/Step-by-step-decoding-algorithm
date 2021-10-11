@@ -1,4 +1,4 @@
-package com.example.viewModel
+package com.coding.viewModel
 
 import tornadofx.ViewModel
 

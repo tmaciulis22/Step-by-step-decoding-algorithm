@@ -1,13 +1,13 @@
-package com.example.ui.experiment
+package com.coding.ui.experiment
 
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.chart.CategoryAxis
 import javafx.scene.chart.NumberAxis
 import tornadofx.*
-import com.example.ui.general.ParametersView
-import com.example.util.nextView
-import com.example.viewModel.ExperimentViewModel
+import com.coding.ui.general.ParametersView
+import com.coding.util.nextView
+import com.coding.viewModel.ExperimentViewModel
 
 class ExperimentResultsView : View() {
 
