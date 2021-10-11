@@ -1,5 +1,6 @@
 package com.example.ui.general
 
+import com.example.ui.experiment.ExperimentProcessingView
 import com.example.viewModel.Channel
 import com.example.viewModel.Encoder
 import javafx.beans.property.SimpleDoubleProperty
@@ -33,8 +34,13 @@ class ParametersView: View() {
                 textfield(parameterPe)
             }
         }
-        vbox(alignment = Pos.BOTTOM_RIGHT) {
+        hbox(spacing = 12, alignment = Pos.BOTTOM_RIGHT) {
             vgrow = Priority.ALWAYS
+            button("Experiment") {
+                action {
+                    nextView<ExperimentProcessingView>()
+                }
+            }
             button("Continue") {
                 action {
                     val allParametersEntered = parameterN.value > 0 && parameterK.value > 0 && parameterPe.value > 0
