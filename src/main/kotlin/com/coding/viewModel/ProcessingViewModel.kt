@@ -34,7 +34,7 @@ abstract class ProcessingViewModel<T> : ViewModel() {
     // Arguments: byte array
     // Returns: string of binary bits
     protected fun bytesToBinaryString(byteArray: ByteArray) = byteArray.joinToString("") {
-        // Signed byte to unsigned (leaving least significant 8 bits)
+        // Signed byte to unsigned (leaving least significant 8 bits). E.g. 11111111 10101010 becomes 10101010
         // 0x100 (256) is used to add zeros to the left of string if necessary to get proper 8 bit format
         val asd = Integer.toBinaryString((it.toInt() and 0xFF) + 0x100).substring(1)
         asd
