@@ -26,7 +26,8 @@ class TextInputView : View() {
             padding = insets(top = 10.0)
             button("Next") {
                 action {
-                    nextView<TextProcessingView>()
+                    if (originalText.value != null)
+                        nextView<TextProcessingView>()
                 }
             }
         }

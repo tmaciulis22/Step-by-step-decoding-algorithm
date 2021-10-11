@@ -65,7 +65,7 @@ class ImageProcessingResultsView : View() {
 
     override fun onDock() {
         super.onDock()
-        currentWindow?.width = originalImage.value.width * 3
+        currentWindow?.width = originalImage.value.width * 3 + 50
         currentWindow?.height = originalImage.value.height + 175
     }
 
