@@ -11,7 +11,7 @@ repositories {
 }
 
 application {
-    mainClassName = "com.example.MyApp"
+    mainClassName = "com.coding.MyApp"
 }
 
 dependencies {
