@@ -50,7 +50,6 @@ abstract class ProcessingViewModel<T> : ViewModel() {
 
         binaryString.forEachIndexed { index, bit ->
             val bitAsInt = bit.digitToInt()
-//            val bitAsInt = bit.toString().toInt()
             currentVector.add(bitAsInt)
 
             if (currentVector.size == encoder.parameterK) {
