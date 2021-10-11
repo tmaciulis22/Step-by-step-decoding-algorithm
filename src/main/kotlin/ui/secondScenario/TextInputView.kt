@@ -6,6 +6,7 @@ import tornadofx.*
 import util.nextView
 import viewModel.SecondScenarioViewModel
 
+// GUI class for inputting text which will be encoded/decoded.
 class TextInputView : View() {
 
     private val secondScenarioViewModel: SecondScenarioViewModel by inject()

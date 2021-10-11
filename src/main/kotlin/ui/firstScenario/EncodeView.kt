@@ -10,6 +10,7 @@ import util.textFieldBit
 import util.nextView
 import viewModel.FirstScenarioViewModel
 
+// GUI class for inputting message vector of length K and encoding it.
 class EncodeView : View() {
 
     private val encoder: Encoder by inject()

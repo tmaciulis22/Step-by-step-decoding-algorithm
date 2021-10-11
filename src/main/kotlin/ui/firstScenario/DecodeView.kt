@@ -10,6 +10,9 @@ import util.nextView
 import viewModel.Decoder
 import viewModel.FirstScenarioViewModel
 
+// GUI class for showing the decoded message vector.
+// Original message vector and the encoded vector which was sent through channel are shown as well for comparison.
+// User can choose to try other scenario or to input new parameters.
 class DecodeView : View() {
 
     private val decoder: Decoder by inject()

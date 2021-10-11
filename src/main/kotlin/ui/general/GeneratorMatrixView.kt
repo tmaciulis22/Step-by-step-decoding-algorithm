@@ -10,6 +10,9 @@ import ui.MatrixChangedEvent
 import util.nextView
 import util.textFieldBit
 
+// GUI class for inputting generator matrix. First K columns are not editable as they are made up of identity matrix.
+// User can choose if they want to use random bit values in other N-K columns, or they can input those values themselves.
+// Once Continue button is pressed, the decoder is initialized.
 class GeneratorMatrixView : View() {
 
     private val encoder: Encoder by inject()

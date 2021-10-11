@@ -10,6 +10,9 @@ import ui.general.ParametersView
 import ui.general.ScenarioSelectorView
 import util.nextView
 
+// GUI class which shows the text processing (encoding, decoding, etc.) results.
+// Original text, the text which was sent through channel without coding, and also encoded/decoded text are shown as well for comparison.
+// User can choose to try other scenario or to input new parameters.
 class TextProcessingResultsView : View() {
 
     private val secondScenarioViewModel: SecondScenarioViewModel by inject()

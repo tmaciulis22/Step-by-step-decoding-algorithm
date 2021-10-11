@@ -6,6 +6,8 @@ import tornadofx.*
 import util.nextView
 import viewModel.SecondScenarioViewModel
 
+// GUI class which shows progress bar as long as the previously inputted text is being processed(encoded, decoded, etc.)
+// Once the processing is done, the next view with results is automatically shown.
 class TextProcessingView : View() {
 
     private val secondScenarioViewModel: SecondScenarioViewModel by inject()

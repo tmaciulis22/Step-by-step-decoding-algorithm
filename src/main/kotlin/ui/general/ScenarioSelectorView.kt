@@ -12,6 +12,8 @@ import viewModel.FirstScenarioViewModel
 import viewModel.SecondScenarioViewModel
 import viewModel.ThirdScenarioViewModel
 
+// GUI class for selecting scenario.
+// Once scenario is selected appropriate business logic ViewModel is initialized.
 class ScenarioSelectorView : View() {
 
     private val encoder: Encoder by inject()

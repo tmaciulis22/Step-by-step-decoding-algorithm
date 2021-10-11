@@ -10,6 +10,9 @@ import ui.general.ScenarioSelectorView
 import util.nextView
 import viewModel.ThirdScenarioViewModel
 
+// GUI class which shows the image processing (encoding, decoding, etc.) results.
+// Original image, the image which was sent through channel without coding, and also encoded/decoded image are shown as well for comparison.
+// User can choose to try other scenario or to input new parameters.
 class ImageProcessingResultsView : View() {
 
     private val thirdScenarioViewModel: ThirdScenarioViewModel by inject()

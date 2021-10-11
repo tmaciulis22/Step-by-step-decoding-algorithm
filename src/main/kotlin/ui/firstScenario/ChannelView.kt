@@ -10,6 +10,9 @@ import util.nextView
 import util.textFieldBit
 import viewModel.FirstScenarioViewModel
 
+// GUI class for showing the encoded vector which was sent through channel.
+// It also shows where mistakes were made. It is possible for user to change the vector's values,
+// thus changing how many and where the mistakes were made.
 class ChannelView : View() {
 
     private val channel: Channel by inject()

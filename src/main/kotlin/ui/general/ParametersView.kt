@@ -9,6 +9,8 @@ import javafx.scene.layout.Priority
 import tornadofx.*
 import util.nextView
 
+// GUI class for inputting code parameters N and K, as well as channel parameter Pe.
+// Once Continue button is pressed the parameters' validity is checked and encoder with channel are intialized
 class ParametersView: View() {
 
     private val encoder: Encoder by inject()

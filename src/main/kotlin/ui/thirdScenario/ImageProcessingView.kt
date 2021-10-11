@@ -6,6 +6,8 @@ import tornadofx.*
 import util.nextView
 import viewModel.ThirdScenarioViewModel
 
+// GUI class which shows progress bar as long as the previously selected image is being processed(encoded, decoded, etc.)
+// Once the processing is done, the next view with results is automatically shown.
 class ImageProcessingView : View() {
 
     private val thirdScenarioViewModel: ThirdScenarioViewModel by inject()

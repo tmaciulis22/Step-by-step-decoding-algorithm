@@ -8,6 +8,8 @@ import tornadofx.*
 import util.nextView
 import viewModel.ThirdScenarioViewModel
 
+// GUI class for selecting image for encoding/decoding.
+// User clicks the Choose button and file dialog is opened, where user can select the bmp image.
 class ImageSelectorView : View() {
 
     private val thirdScenarioViewModel: ThirdScenarioViewModel by inject()
