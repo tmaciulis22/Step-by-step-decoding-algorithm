@@ -4,10 +4,12 @@ import javafx.event.EventTarget
 import tornadofx.*
 
 // Extension function which generates textField for binary bits
+// Arguments: value of text field, boolean value which shows if textField is editable, onChange event listener
+// Returns: textField component
 fun EventTarget.textFieldBit(
     value: Int,
     isEditable: Boolean = true,
-    changeListener: ((Int) -> Unit)? = null
+    onChange: ((Int) -> Unit)? = null
 ) = textfield(value.toString()) {
         this.isEditable = isEditable
         filterInput {
@@ -19,7 +21,7 @@ fun EventTarget.textFieldBit(
 
             val newIntValue = new.toInt()
             if (newIntValue == 0 || newIntValue == 1)
-                changeListener?.invoke(new.toInt())
+                onChange?.invoke(new.toInt())
         }
     }
 
