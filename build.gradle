@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.31'
-    implementation 'no.tornado:tornadofx:1.7.15'
+    implementation 'no.tornado:tornadofx:1.7.20'
 }
